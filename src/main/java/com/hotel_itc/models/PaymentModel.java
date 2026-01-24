@@ -3,23 +3,26 @@ package com.hotel_itc.models;
 import com.hotel_itc.enums.PaymentStatus;
 import jakarta.persistence.*;
 
+import java.awt.print.Book;
+
 @Entity
 @Table(name = "payments")
 public class PaymentModel extends BaseModel {
 
 
-    private  String bookingId;
+    @OneToOne
+    private BookingModel booking;
     private double amount;
     private String payment_mode;
 
     private PaymentStatus payment_status;
 
-    public String getBookingId() {
-        return bookingId;
+    public BookingModel getBooking() {
+        return booking;
     }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
+    public void setBooking(BookingModel booking) {
+        this.booking = booking;
     }
 
     public double getAmount() {

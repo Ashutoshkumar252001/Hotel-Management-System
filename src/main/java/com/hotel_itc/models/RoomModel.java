@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "rooms")
 public class RoomModel extends BaseModel {
 
-    @ManyToOne
+   @ManyToOne
    private HotelModel hotelModel;
    private Integer roomNumber;
    private String type;

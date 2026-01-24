@@ -102,6 +102,7 @@
         <td th:text="${r.Type}"></td>
         <td th:text="${r.pricePerNight}"></td>
         <td th:text="${r.status}"></td>
+        <td th:text="${r.hotelModel.name}"></td>
 
         <td>
             <a th:href="@{/room/edit/{id}(id=${r.id})}" class="edit">✏ Edit</a>

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -28,11 +27,6 @@ public class HotelController
     @Autowired
     private HotelDataValidator hotelDataValidator;
 
-    @GetMapping("/")
-    public String hotelHome()
-    {
-        return "redirect:/hotel/list";
-    }
 
     @GetMapping("/new")
     public String createNewHotel(Model model)
@@ -42,52 +36,52 @@ public class HotelController
     }
 
     @PostMapping("/save")
-    public String saveHotel(@ModelAttribute HotelModel hotel, RedirectAttributes model)
+    public String saveHotel(@ModelAttribute HotelModel hotel, Model model)
     {
         if(hotel.getId()==null)
         {
             List<String> errors = hotelDataValidator.validate(hotel);
             if(!errors.isEmpty())
             {
-                model.addFlashAttribute("error",errors);
+                model.addAttribute("error",errors);
             }
             else
             {
                 try
                 {
                     hotelServices.saveHotel(hotel);
-                    model.addFlashAttribute("success","Hotel created successfully");
+                    model.addAttribute("success","Hotel created successfully");
                 }
                 catch (Exception e)
                 {
-                    model.addFlashAttribute("errors","Error during Hotel  data Creation");
+                    model.addAttribute("errors","Error during Hotel  data Creation");
                 }
             }
         }
 
-        model.addFlashAttribute("hotel",hotelServices.findAllHotels());
-
-         return "redirect:/hotel/list";
+        model.addAttribute("hotels",hotelServices.findAllHotels());
+        return "hotel";
     }
 
     @GetMapping("/edit/{id}")
     public String editHotel(@PathVariable Long id,
-                            RedirectAttributes model)
+                            Model model)
     {
 
         try
         {
             HotelModel hotel = hotelServices.getHotelById(id);
-            model.addFlashAttribute("hotel", hotel);
-            model.addFlashAttribute("rooms", roomServices.findAllRooms());
+            model.addAttribute("hotel", hotel);
+            model.addAttribute("rooms", roomServices.findAllRooms());
             return "hotel-form";
 
         }
         catch (HotelNotFoundException e)
         {
-            model.addFlashAttribute("error", e.getMessage());
-            return "redirect:/hotel/list";
+            model.addAttribute("error", e.getMessage());
         }
+        model.addAttribute("hotels", hotelServices.findAllHotels());
+        return "hotel";
     }
 
     @GetMapping("/list")
@@ -110,19 +104,17 @@ public class HotelController
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteHotel(@PathVariable Long id, RedirectAttributes redirect)
-    {
+    public String deleteHotel(@PathVariable Long id, Model model) {
 
-        try
-        {
+        try {
             hotelServices.deleteHotel(id);
-            redirect.addFlashAttribute("success", "Hotel deleted successfully");
-        }
-        catch (Exception e)
-        {
-            redirect.addFlashAttribute("error", e.getMessage());
+            model.addAttribute("success", "Hotel deleted successfully");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
         }
 
-        return "redirect:/hotel/list";
+        model.addAttribute("hotels", hotelServices.findAllHotels());
+        return "hotel";
     }
+
 }

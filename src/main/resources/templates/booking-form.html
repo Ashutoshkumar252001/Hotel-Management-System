@@ -3,82 +3,47 @@
 <head>
     <title>Booking Form</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-        }
-        .container {
-            width: 40%;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            width: 100%;
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
+        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
+        .container { width: 40%; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 10px; width: 100%; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
     <h2 th:text="${booking.id == null ? 'New Booking' : 'Edit Booking'}"></h2>
 
     <form th:action="@{/booking/save}" th:object="${booking}" method="post">
-
-        <!-- Hidden ID for Edit -->
         <input type="hidden" th:field="*{id}" />
 
-<!--         Customer -->
         <label>Customer</label>
         <select th:field="*{customer.id}" required>
             <option value="">-- Select Customer --</option>
-            <option th:each="c : ${customers}"
-                    th:value="${c.id}"
-                    th:text="${c.name}">
-            </option>
+            <option th:each="c : ${customers}" th:value="${c.id}" th:text="${c.name}"></option>
         </select>
 
-<!--         Room -->
-        <label>Room</label>
+        <label>Hotel</label>
+        <select th:field="*{hotel.id}" required>
+            <option value="">-- Select Hotel --</option>
+            <option th:each="c : ${hotels}" th:value="${c.id}" th:text="${c.name}"></option>
+        </select>
+
+        <label>Rooms</label>
         <select th:field="*{room.id}" required>
             <option value="">-- Select Room --</option>
-            <option th:each="r : ${rooms}"
-                    th:value="${r.id}"
-                    th:text="'Room ' + ${r.roomNumber}">
-            </option>
+            <option th:each="c : ${rooms}" th:value="${c.id}" th:text="${c.roomNumber}"></option>
         </select>
 
-        <!-- Check-in Date -->
         <label>Check-In Date</label>
-        <input type="date" th:field="*{checkindate}" required />
+        <input type="date" th:field="*{checkInDate}" required />
 
-        <!-- Check-out Date -->
         <label>Check-Out Date</label>
-        <input type="date" th:field="*{checkoutdate}" required />
+        <input type="date" th:field="*{checkOutDate}" required />
 
-        <!-- Booking Status -->
         <label>Status</label>
         <select th:field="*{status}" required>
             <option value="">-- Select Status --</option>
@@ -87,10 +52,7 @@
             <option value="COMPLETED">COMPLETED</option>
         </select>
 
-        <button type="submit">
-            Save Booking
-        </button>
-
+        <button type="submit">Save Booking</button>
     </form>
 </div>
 

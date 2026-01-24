@@ -1,10 +1,7 @@
 package com.hotel_itc.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.util.List;
 
 
 @Entity
@@ -15,7 +12,7 @@ public class CustomerModel extends BaseModel {
    private String name;
    private String phone;
    private String email;
-   private String id_proof;
+   private String idProofNumber;
 
 
 
@@ -44,11 +41,11 @@ public class CustomerModel extends BaseModel {
         this.email = email;
     }
 
-    public String getId_proof() {
-        return id_proof;
+    public String getIdProofNumber() {
+        return idProofNumber;
     }
 
-    public void setId_proof(String id_proof) {
-        this.id_proof = id_proof;
+    public void setIdProofNumber(String idProofNumber) {
+        this.idProofNumber = idProofNumber;
     }
 }

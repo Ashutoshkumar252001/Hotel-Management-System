@@ -17,7 +17,7 @@ public class BookingModel extends BaseModel {
     @ManyToOne
     private CustomerModel customer;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PaymentModel payment;
 
     @OneToOne
@@ -25,7 +25,7 @@ public class BookingModel extends BaseModel {
 
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-   private LocalDate checkindate;
+   private LocalDate checkInDate;
 
     public HotelModel getHotel() {
         return hotel;
@@ -36,7 +36,7 @@ public class BookingModel extends BaseModel {
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-   private LocalDate checkoutdate;
+   private LocalDate checkOutDate;
 
 
 
@@ -46,8 +46,8 @@ public class BookingModel extends BaseModel {
 
 
 
-    public LocalDate getCheckindate() {
-        return checkindate;
+    public LocalDate getCheckInDate() {
+        return checkInDate;
     }
 
 
@@ -68,16 +68,16 @@ public class BookingModel extends BaseModel {
         this.customer = customer;
     }
 
-    public void setCheckindate(LocalDate checkindate) {
-        this.checkindate = checkindate;
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
     }
 
-    public LocalDate getCheckoutdate() {
-        return checkoutdate;
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
     }
 
-    public void setCheckoutdate(LocalDate checkoutdate) {
-        this.checkoutdate = checkoutdate;
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
 

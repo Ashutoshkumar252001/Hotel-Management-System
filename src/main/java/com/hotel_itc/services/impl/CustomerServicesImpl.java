@@ -45,7 +45,7 @@ public class CustomerServicesImpl implements CustomerServices {
                 throw new CustomerNotFoundException("customer not fount by this id:"+customer.getId());
             }
             CustomerModel c= opt.get();
-            c.setId_proof(customer.getId_proof());
+            c.setIdProofNumber(customer.getIdProofNumber());
             c.setId(customer.getId());
             c.setEmail(customer.getEmail());
             c.setName(customer.getName());

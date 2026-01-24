@@ -93,10 +93,10 @@
     <tr>
         <th>ID</th>
         <th>Customer</th>
+        <th>Hotel</th>
         <th>Room</th>
         <th>Check-In Date</th>
         <th>Journey Date</th>
-        <th>Total Amount</th>
         <th>Status</th>
         <th>Action</th>
     </tr>
@@ -108,15 +108,13 @@
 
         <td th:text="${b.customer.name}"></td>
 
+        <td th:text="${b.hotel.name}"></td>
 
         <td th:text="${b.room.roomNumber}"></td>
 
         <!-- LocalDate fields -->
-        <td th:text="${b.checkindate}"></td>
-        <td th:text="${b.checkoutdate}"></td>
-
-        <!-- Amount -->
-        <td th:text="${b.totalamount}"></td>
+        <td th:text="${b.checkInDate}"></td>
+        <td th:text="${b.checkOutDate}"></td>
 
         <!-- Enum -->
         <td th:text="${b.status}"></td>

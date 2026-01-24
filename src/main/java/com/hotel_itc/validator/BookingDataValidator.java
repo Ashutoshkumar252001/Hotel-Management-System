@@ -13,11 +13,11 @@ public class BookingDataValidator implements DataValidator{
     public List<String> validate(Object data) {
         List<String> errors= new ArrayList<>();
         BookingModel booking = (BookingModel) data;
-        if(booking.getCheckindate().isBefore(LocalDate.now())){
+        if(booking.getCheckInDate().isBefore(LocalDate.now())){
             errors.add("booking data cannot older than today");
 
         }
-        if (booking.getCheckoutdate().isBefore(booking.getCheckindate() ) || booking.getCheckoutdate().isEqual(booking.getCheckindate())){
+        if (booking.getCheckOutDate().isBefore(booking.getCheckInDate() ) || booking.getCheckOutDate().isEqual(booking.getCheckInDate())){
             errors.add("Check-out date must be after check in date");
         }
         return List.of();

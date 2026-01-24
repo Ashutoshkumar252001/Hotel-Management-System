@@ -16,8 +16,8 @@ public class RoomDataValidator implements DataValidator{
         RoomModel room = (RoomModel) data;
         if(room.getPricePerNight()<0)
             errors.add("price cannot be in a negative ");
-        if(Objects.equals(room.getRoomNumber(), room.getRoomNumber()) || room.getRoomNumber()!= null)
-              errors.add("room number not same or null");
+      /*  if(Objects.equals(room.getRoomNumber(), room.getRoomNumber()) || room.getRoomNumber()!= null)
+              errors.add("room number not same or null");*/
         return errors;
     }
 }

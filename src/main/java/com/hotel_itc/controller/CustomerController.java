@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,11 +22,7 @@ public class CustomerController
 
     @Autowired
     private CustomerDataValidator customerDataValidator;
-    @GetMapping("/")
-    public String displayCustomerName(Model model)
-    {
-        return "redirect:/customer/list";
-    }
+
 
     @GetMapping("/new")
     public String createNewCustomer(Model model)
@@ -37,30 +32,29 @@ public class CustomerController
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute CustomerModel c, RedirectAttributes model){
+    public String saveCustomer(@ModelAttribute CustomerModel c, Model model){
 
         if(c.getId()==null)
         {
             List<String> errors = customerDataValidator.validate(c);
             if (!errors.isEmpty())
             {
-                model.addFlashAttribute("error", errors);
+                model.addAttribute("error", errors);
             }
             else
             {
                 try
                 {
                     customerServices.saveCustomer(c);
-                    model.addFlashAttribute("success", "Customer created successfully");
+                    model.addAttribute("success", "Customer created successfully");
                 } catch (Exception e)
                 {
-                    model.addFlashAttribute("error", "Error during Customer data creation");
+                    model.addAttribute("error", "Error during Customer data creation");
                 }
             }
         }
-        model.addFlashAttribute("customer",customerServices.findAllCustomer());
-
-        return "redirect:/customer/list";
+        model.addAttribute("customers",customerServices.findAllCustomer());
+        return "customer";
 
     }
     @GetMapping("/edit/{id}")
@@ -99,18 +93,19 @@ public class CustomerController
     }
 
     @DeleteMapping("/delete/{id}")
-    public String removeCustomerById(@PathVariable Long id,RedirectAttributes model)
+    public String removeCustomerById(@PathVariable Long id,Model model)
     {
         try
         {
             customerServices.deleteCustomer(id);
-            model.addFlashAttribute("success","customer deleted successfully");
+            model.addAttribute("success","customer deleted successfully");
         }
         catch (Exception e)
         {
-            model.addFlashAttribute("error",e.getMessage());
+            model.addAttribute("error",e.getMessage());
         }
-        return "redirect:/customer/list";
+        model.addAttribute("customers",customerServices.findAllCustomer());
+        return "customer";
     }
 
 }

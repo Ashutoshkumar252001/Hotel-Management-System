@@ -64,6 +64,18 @@
         <!-- hidden id -->
         <input type="hidden" th:field="*{id}"/>
 
+
+        <div class="form-row">
+            <label>Hotel</label>
+            <select th:field="*{hotelModel}" required>
+                <option value="">-- Select Hotel --</option>
+                <option th:each="t : ${hotels}"
+                        th:value="${t.id}"
+                        th:text="${t.name}">
+                </option>
+            </select>
+        </div>
+
         <label>Room Number</label>
         <input type="number"
                th:field="*{roomNumber}"
