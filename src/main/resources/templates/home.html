@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hotel Management | Home</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 18px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            background: #2c80b4;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #ecf0f1;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    🏨 Hotel Management System
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <i class="fa-solid fa-hotel"></i>
+        <h3>Hotels</h3>
+        <a th:href="@{/hotel/list}">Manage Hotels</a>
+    </div>
+
+    <div class="card">
+        <i class="fa-solid fa-users"></i>
+        <h3>Customers</h3>
+        <a th:href="@{/customer/list}">Manage Customers</a>
+    </div>
+
+    <div class="card">
+        <i class="fa-solid fa-bed"></i>
+        <h3>Rooms</h3>
+        <a th:href="@{/room/list}">Manage Rooms</a>
+    </div>
+
+    <div class="card">
+        <i class="fa-solid fa-calendar-check"></i>
+        <h3>Bookings</h3>
+        <a th:href="@{/booking/list}">Manage Bookings</a>
+    </div>
+
+    <div class="card">
+        <i class="fa-solid fa-credit-card"></i>
+        <h3>Payments</h3>
+        <a th:href="@{/payment/list}">Manage Payments</a>
+    </div>
+
+</div>
+
+<div class="footer">
+    © 2026 Hotel ITC | Spring Boot Project
+</div>
+
+</body>
+</html>

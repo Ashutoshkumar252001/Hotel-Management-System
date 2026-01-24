@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hotel Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .success { color: green; }
+        .error { color: red; }
+
+        .top-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .add-btn {
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .edit {
+            background: #f1c40f;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: black;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🏨 Hotel Management</h2>
+
+<p th:if="${success}" th:text="${success}" class="message success"></p>
+<p th:if="${error}" th:text="${error}" class="message error"></p>
+
+<div class="top-bar">
+    <a th:href="@{/hotel/new}" class="add-btn">➕ New Hotel</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Hotel Name</th>
+        <th>Address</th>
+        <th>Rating</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="h : ${hotels}">
+        <td th:text="${h.id}"></td>
+        <td th:text="${h.name}"></td>
+        <td th:text="${h.address}"></td>
+        <td th:text="${h.rating}"></td>
+
+        <td>
+            <a th:href="@{/hotel/edit/{id}(id=${h.id})}"
+               class="edit">✏ Edit</a>
+
+            <form th:action="@{/hotel/delete/{id}(id=${h.id})}"
+                  method="post"
+                  onsubmit="return confirm('Are you sure?')"
+                  style="display:inline;">
+
+                <!-- 🔥 Ye line IMPORTANT hai -->
+                <input type="hidden" name="_method" value="DELETE"/>
+
+                <button type="submit" class="delete">
+                    🗑 Delete
+                </button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

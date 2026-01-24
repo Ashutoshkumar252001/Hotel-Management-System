@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer List</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #f6f9fc, #e9eff5);
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 25px;
+            color: #2c3e50;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .add-btn {
+            background: #3498db;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #2c80b4;
+        }
+
+        .message {
+            text-align: center;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .table-container {
+            width: 95%;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f4f6f9;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3498db;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        .edit {
+            background: #f1c40f;
+            color: #000;
+        }
+
+        .delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete:hover {
+            background: #c0392b;
+        }
+
+    </style>
+</head>
+<body>
+
+<h2>👥 Customer Management</h2>
+
+<p th:if="${success}" th:text="${success}" class="message success"></p>
+<p th:if="${error}" th:text="${error}" class="message error"></p>
+
+
+<div class="top-bar">
+    <a th:href="@{/customer/new}" class="add-btn">➕ Add New Customer</a>
+
+</div>
+
+<div class="table-container">
+
+    <table>
+        <thead>
+        <tr>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>ID Proof</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="c : ${customers}">
+            <td>
+                <!-- Dummy profile picture -->
+                <img src="https://i.pravatar.cc/100"
+                     alt="profile"
+                     class="avatar">
+            </td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.phone}"></td>
+            <td th:text="${c.email}"></td>
+            <td th:text="${c.id_proof}"></td>
+            <td>
+                <a th:href="@{/customer/edit/{id}(id=${c.id})}"
+                   class="action-btn edit">✏ Edit</a>
+
+
+                <form th:action="@{/customer/delete/{id}(id=${c.id})}"
+                      method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit"
+                            class="action-btn delete"
+                            onclick="return confirm('Are you sure?')">
+                        🗑 Delete
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

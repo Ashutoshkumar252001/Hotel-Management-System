@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Booking Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .success { color: green; }
+        .error { color: red; }
+
+        .top-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .add-btn {
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .edit {
+            background: #f1c40f;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: black;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📖 Booking Management</h2>
+
+<p th:if="${success}" th:text="${success}" class="message success"></p>
+<p th:if="${error}" th:text="${error}" class="message error"></p>
+
+<div class="top-bar">
+    <a th:href="@{/booking/new}" class="add-btn">➕ New Booking</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Room</th>
+        <th>Check-In Date</th>
+        <th>Journey Date</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="b : ${bookings}">
+        <td th:text="${b.id}"></td>
+
+        <td th:text="${b.customer.name}"></td>
+
+
+        <td th:text="${b.room.roomNumber}"></td>
+
+        <!-- LocalDate fields -->
+        <td th:text="${b.checkindate}"></td>
+        <td th:text="${b.checkoutdate}"></td>
+
+        <!-- Amount -->
+        <td th:text="${b.totalamount}"></td>
+
+        <!-- Enum -->
+        <td th:text="${b.status}"></td>
+
+        <td>
+            <a th:href="@{/booking/edit/{id}(id=${b.id})}"
+               class="edit">✏ Edit</a>
+
+            <form th:action="@{/booking/delete/{id}(id=${b.id})}"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Are you sure?')">
+
+                <input type="hidden" name="_method" value="delete"/>
+
+                <button type="submit" class="delete">
+                    🗑 Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
