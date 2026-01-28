@@ -80,6 +80,11 @@
 
 <div class="top-bar">
     <a th:href="@{/room/new}" class="add-btn">➕ Add Room</a>
+    <th>
+
+
+        <a th:href="@{/}" class="home-btn">🏠 Home</a>
+    </th>
 </div>
 
 <table>
@@ -99,11 +104,14 @@
     <tr th:each="r : ${rooms}">
         <td th:text="${r.id}"></td>
         <td th:text="${r.roomNumber}"></td>
-        <td th:text="${r.Type}"></td>
+        <td th:text="${r.type}"></td>
         <td th:text="${r.pricePerNight}"></td>
         <td th:text="${r.status}"></td>
-        <td th:text="${r.hotelModel.name}"></td>
-
+        <td>
+            <a th:href="@{/hotel/find/{id}(id=${r.hotelModel.id})}"
+               th:text="${r.hotelModel.name}">
+            </a>
+        </td>
         <td>
             <a th:href="@{/room/edit/{id}(id=${r.id})}" class="edit">✏ Edit</a>
             |

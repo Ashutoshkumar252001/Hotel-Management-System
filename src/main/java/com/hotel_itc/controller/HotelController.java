@@ -38,30 +38,32 @@ public class HotelController
     @PostMapping("/save")
     public String saveHotel(@ModelAttribute HotelModel hotel, Model model)
     {
-        if(hotel.getId()==null)
+        List<String> errors = hotelDataValidator.validate(hotel);
+
+
+        if(!errors.isEmpty())
         {
-            List<String> errors = hotelDataValidator.validate(hotel);
-            if(!errors.isEmpty())
-            {
-                model.addAttribute("error",errors);
-            }
-            else
-            {
-                try
-                {
-                    hotelServices.saveHotel(hotel);
-                    model.addAttribute("success","Hotel created successfully");
-                }
-                catch (Exception e)
-                {
-                    model.addAttribute("errors","Error during Hotel  data Creation");
-                }
-            }
+            model.addAttribute("error", errors);
+            return "hotel-form";
         }
 
-        model.addAttribute("hotels",hotelServices.findAllHotels());
+
+        try
+        {
+            hotelServices.saveHotel(hotel);
+
+
+            model.addAttribute("success", "Hotel created successfully");
+        }
+        catch (Exception e)
+        {
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("hotels", hotelServices.findAllHotels());
         return "hotel";
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String editHotel(@PathVariable Long id,
@@ -114,6 +116,19 @@ public class HotelController
         }
 
         model.addAttribute("hotels", hotelServices.findAllHotels());
+        return "hotel";
+    }
+
+    @GetMapping("/find/{id}")
+    public String findById(@PathVariable Long id,Model model){
+        try{
+            HotelModel hotel = hotelServices.getHotelById(id);
+            model.addAttribute("sucess","hotel found");
+            model.addAttribute("hotels",List.of(hotel));
+        }catch (Exception e){
+            model.addAttribute("error","hotel not found");
+            model.addAttribute("hotels",null);
+        }
         return "hotel";
     }
 

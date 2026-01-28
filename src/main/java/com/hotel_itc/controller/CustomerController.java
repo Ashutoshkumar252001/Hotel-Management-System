@@ -2,6 +2,7 @@ package com.hotel_itc.controller;
 
 import com.hotel_itc.exception.CustomerNotFoundException;
 import com.hotel_itc.models.CustomerModel;
+import com.hotel_itc.models.PaymentModel;
 import com.hotel_itc.services.CustomerServices;
 import com.hotel_itc.validator.CustomerDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,15 @@ public class CustomerController
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute CustomerModel c, Model model){
+    public String saveCustomer(@ModelAttribute CustomerModel c, Model model)
 
-        if(c.getId()==null)
+
         {
             List<String> errors = customerDataValidator.validate(c);
             if (!errors.isEmpty())
             {
-                model.addAttribute("error", errors);
+                model.addAttribute("error", errors.get(0));
+                return "customer.html";
             }
             else
             {
@@ -52,7 +54,7 @@ public class CustomerController
                     model.addAttribute("error", "Error during Customer data creation");
                 }
             }
-        }
+
         model.addAttribute("customers",customerServices.findAllCustomer());
         return "customer";
 
@@ -106,6 +108,23 @@ public class CustomerController
         }
         model.addAttribute("customers",customerServices.findAllCustomer());
         return "customer";
+    }
+    @GetMapping("/find/{id}")
+    public String getById(@PathVariable Long id, Model model) {
+        try {
+            CustomerModel customer = customerServices.getCustomerById(id);
+            model.addAttribute("success","payment found ");
+            model.addAttribute("customers",List.of(customer));
+
+
+        }catch (Exception e){
+            model.addAttribute("error",e.getMessage());
+            model.addAttribute("customers",null);
+
+        }
+        return "customer";
+
+
     }
 
 }

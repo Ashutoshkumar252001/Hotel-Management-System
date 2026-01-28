@@ -1,22 +1,23 @@
 package com.hotel_itc.models;
 
 import com.hotel_itc.enums.HotelRating;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 
 @Entity
-@Table(name = "hotels")
+@Table(name = "hotels",uniqueConstraints = {@UniqueConstraint(columnNames = {"hotel_name","address"})})
 public class HotelModel extends BaseModel {
 
    @OneToMany
    private List<RoomModel> rooms;
-   private String name;
-   private String address;
-   private HotelRating rating;
+
+    @Column(name = "hotel_name",nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String address;
+    private HotelRating rating;
 
     public List<RoomModel> getRooms() {
         return rooms;
@@ -25,7 +26,6 @@ public class HotelModel extends BaseModel {
     public void setRooms(List<RoomModel> rooms) {
         this.rooms = rooms;
     }
-
     public String getName() {
         return name;
     }

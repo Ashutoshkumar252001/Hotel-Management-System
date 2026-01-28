@@ -44,8 +44,8 @@ public class PaymentServicesImpl implements PaymentServices {
                 throw new PaymentNotDoneException("payment not done with this Id:"+payment.getId());
             }
             PaymentModel payment1 = opt.get();
-            payment1.setPayment_mode(payment.getPayment_mode());
-            payment1.setPayment_status(payment.getPayment_status());
+            payment1.setPaymentMode(payment.getPaymentMode());
+            payment1.setPaymentStatus(payment.getPaymentStatus());
             payment1.setAmount(payment.getAmount());
             paymentRepo.save(payment1);
         }

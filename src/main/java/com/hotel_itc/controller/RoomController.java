@@ -1,6 +1,7 @@
 package com.hotel_itc.controller;
 
 import com.hotel_itc.exception.RoomNotFoundException;
+import com.hotel_itc.models.HotelModel;
 import com.hotel_itc.models.RoomModel;
 import com.hotel_itc.services.HotelServices;
 import com.hotel_itc.services.RoomServices;
@@ -36,32 +37,28 @@ public class RoomController {
     }
 
     @PostMapping("/save")
-    public String saveRoom(@ModelAttribute RoomModel room, Model model)
-    {
+    public String saveRoom(@ModelAttribute RoomModel room, Model model) {
 
-            if (room.getId() == null)
+         List<String > errors = roomDataValidator.validate(room);
+            if(!errors.isEmpty())
             {
-                List<String > errors = roomDataValidator.validate(room);
-                if(!errors.isEmpty())
-                {
-                    model.addAttribute("error", errors);
-                }
-                else
-                {
-                    try
-                    {
-                        roomServices.saveRoom(room);
-                        model.addAttribute("success", "Room created successfully");
-                    }
-                    catch (Exception e)
-                    {
-                        model.addAttribute("error", "error during room data creation");
-                    }
-                }
+                model.addAttribute("error", errors);
             }
-            model.addAttribute("rooms",roomServices.findAllRooms());
-            return "room";
-      }
+            else
+            {
+                try
+            { roomServices.saveRoom(room);
+                model.addAttribute("success", "Room created successfully");
+            }
+                catch (Exception e)
+            {
+                model.addAttribute("error", "error during room data creation");
+            }
+            }
+
+        model.addAttribute("rooms",roomServices.findAllRooms());
+        return "room"; }
+
 
     @GetMapping("/edit/{id}")
     public String editRoom(@PathVariable Long id, Model model)
@@ -116,6 +113,18 @@ public class RoomController {
             model.addFlashAttribute("error", e.getMessage());
         }
         model.addAttribute("rooms", roomServices.findAllRooms());
+        return "room";
+    }
+    @GetMapping("/find/{id}")
+    public String findById(@PathVariable Long id,Model model){
+        try{
+            RoomModel room = roomServices.getRoomById(id);
+            model.addAttribute("success","room found");
+            model.addAttribute("rooms",List.of(room));
+        }catch (Exception e){
+            model.addAttribute("error","room not found");
+            model.addAttribute("rooms",null);
+        }
         return "room";
     }
 }

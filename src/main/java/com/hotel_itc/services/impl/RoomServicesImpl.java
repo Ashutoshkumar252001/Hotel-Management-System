@@ -1,8 +1,10 @@
 package com.hotel_itc.services.impl;
 
 import com.hotel_itc.exception.RoomNotFoundException;
+import com.hotel_itc.models.HotelModel;
 import com.hotel_itc.models.RoomModel;
 import com.hotel_itc.repo.RoomRepo;
+import com.hotel_itc.services.HotelServices;
 import com.hotel_itc.services.RoomServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class RoomServicesImpl implements RoomServices {
 
     @Autowired
     private RoomRepo roomRepo;
+
+    @Autowired
+    private HotelServices hotelServices;
 
     @Override
     public RoomModel getRoomById(Long id) throws RoomNotFoundException {
@@ -34,6 +39,10 @@ public class RoomServicesImpl implements RoomServices {
 
     @Override
     public void saveRoom(RoomModel room) {
+
+        HotelModel  hotel =  hotelServices.getHotelById(room.getHotelModel().getId());
+        room.setHotelModel(hotel);
+
         if(room.getId()==null){
             roomRepo.save(room);
         }

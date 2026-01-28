@@ -2,6 +2,7 @@ package com.hotel_itc.controller;
 
 import com.hotel_itc.exception.BookingNotFoundException;
 import com.hotel_itc.models.BookingModel;
+import com.hotel_itc.models.PaymentModel;
 import com.hotel_itc.services.*;
 import com.hotel_itc.validator.BookingDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,9 @@ public class BookingController
     @GetMapping("/new")
     public String createNewBooking(Model model)
     {
-        model.addAttribute("booking", new BookingModel());
+        BookingModel booking = new BookingModel();
+        booking.setPayment(new PaymentModel());
+        model.addAttribute("booking",booking);
         model.addAttribute("customers", customerServices.findAllCustomer());
         model.addAttribute("hotels",hotelServices.findAllHotels());
         model.addAttribute("rooms",roomServices.findAllRooms());
@@ -47,12 +50,17 @@ public class BookingController
 
     @PostMapping("/save")
     public String saveBooking(@ModelAttribute BookingModel booking, Model model) {
+        model.addAttribute("customers",customerServices.findAllCustomer());
+        model.addAttribute("hotels",hotelServices.findAllHotels());
+        model.addAttribute("rooms",roomServices.findAllRooms());
 
-
+        if(booking.getId()==null){
          List<String> errors = bookingDataValidator.validate(booking);
          if(!errors.isEmpty())
          {
              model.addAttribute("error", errors);
+
+             return "booking-form";
          }
          else
          {
@@ -63,8 +71,15 @@ public class BookingController
              }
              catch (Exception e)
              {
-                 model.addAttribute("error", "Error during booking data creation");
+                 model.addAttribute("error", "Error during booking data updation");
              }
+         }
+         try{
+             bookingServices.saveBooking(booking);
+             model.addAttribute("success","Booking updated successfully");
+         }catch (Exception e){
+             model.addAttribute("error","error during booking update");
+         }
          }
 
         model.addAttribute("bookings", bookingServices.findAllBookings());
@@ -76,8 +91,9 @@ public class BookingController
     {
         try
         {
-            BookingModel booking =
-                    bookingServices.getBookingById(id);
+
+            BookingModel booking = bookingServices.getBookingById(id);
+
             model.addAttribute("booking", booking);
             model.addAttribute("customers", customerServices.findAllCustomer());
             model.addAttribute("hotels",hotelServices.findAllHotels());
@@ -85,7 +101,8 @@ public class BookingController
             return "booking-form";
         } catch (BookingNotFoundException e)
         {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", "No Booking Found");
+            model.addAttribute("bookings",bookingServices.findAllBookings());
         }
         return "booking" ;
     }
@@ -122,6 +139,18 @@ public class BookingController
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("bookings", bookingServices.findAllBookings());
+        return "booking";
+    }
+    @GetMapping("/find/{id}")
+    public String findById(@PathVariable Long id,Model model){
+        try {
+            BookingModel booking = bookingServices.getBookingById(id);
+            model.addAttribute("sucess","booking found");
+            model.addAttribute("bookings",List.of(booking));
+        }catch (Exception e){
+            model.addAttribute("error","booking not found");
+            model.addAttribute("bookings",null);
+        }
         return "booking";
     }
 }

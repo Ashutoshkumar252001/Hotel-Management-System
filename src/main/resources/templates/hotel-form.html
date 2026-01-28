@@ -6,16 +6,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background-color: #f4f6f9;
         }
 
         .container {
-            width: 40%;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            width: 400px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         label {
@@ -28,20 +33,31 @@
             width: 100%;
             padding: 8px;
             margin-top: 5px;
+            box-sizing: border-box;
         }
 
         button {
             margin-top: 15px;
             padding: 10px;
             width: 100%;
-            background: #007bff;
-            color: white;
+            background: #3498db;
             border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 5px;
             cursor: pointer;
         }
 
         button:hover {
-            background: #0056b3;
+            background: #2980b9;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #3498db;
         }
     </style>
 </head>
@@ -50,7 +66,7 @@
 
 <div class="container">
 
-    <h2 th:text="${hotel.id == null ? 'New Hotel' : 'Edit Hotel'}"></h2>
+    <h2 th:text="${hotel.id == null ? 'Add Hotel' : 'Edit Hotel'}"></h2>
 
     <form th:action="@{/hotel/save}"
           th:object="${hotel}"
@@ -74,11 +90,14 @@
             </option>
         </select>
 
-        <button type="submit">
-            Save Hotel
+        <button type="submit"
+                th:text="${hotel.id == null ? 'Save Hotel' : 'Update Hotel'}">
         </button>
 
+        <a th:href="@{/hotel/list}">Cancel</a>
+
     </form>
+
 </div>
 
 </body>

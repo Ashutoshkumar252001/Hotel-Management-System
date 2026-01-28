@@ -3,7 +3,6 @@ package com.hotel_itc.models;
 import com.hotel_itc.enums.PaymentStatus;
 import jakarta.persistence.*;
 
-import java.awt.print.Book;
 
 @Entity
 @Table(name = "payments")
@@ -12,10 +11,12 @@ public class PaymentModel extends BaseModel {
 
     @OneToOne
     private BookingModel booking;
-    private double amount;
-    private String payment_mode;
+    private Double amount;
 
-    private PaymentStatus payment_status;
+    private String paymentMode;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     public BookingModel getBooking() {
         return booking;
@@ -25,27 +26,28 @@ public class PaymentModel extends BaseModel {
         this.booking = booking;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public String getPayment_mode() {
-        return payment_mode;
+
+    public String getPaymentMode() {
+        return paymentMode;
     }
 
-    public void setPayment_mode(String payment_mode) {
-        this.payment_mode = payment_mode;
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
-    public PaymentStatus getPayment_status() {
-        return payment_status;
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setPayment_status(PaymentStatus payment_status) {
-        this.payment_status = payment_status;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }

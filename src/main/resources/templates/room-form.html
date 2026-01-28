@@ -67,7 +67,7 @@
 
         <div class="form-row">
             <label>Hotel</label>
-            <select th:field="*{hotelModel}" required>
+            <select th:field="*{hotelModel.id}" required>
                 <option value="">-- Select Hotel --</option>
                 <option th:each="t : ${hotels}"
                         th:value="${t.id}"

@@ -1,5 +1,6 @@
 package com.hotel_itc.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -9,10 +10,15 @@ import jakarta.persistence.Table;
 public class CustomerModel extends BaseModel {
 
 
-   private String name;
-   private String phone;
-   private String email;
-   private String idProofNumber;
+    private String name;
+    @Column(nullable = false,unique = true)
+    private String phone;
+
+    @Column(nullable = false,unique = true)
+    private String email;
+
+    @Column(nullable = false,unique = true)
+    private String idProofNumber;
 
 
 

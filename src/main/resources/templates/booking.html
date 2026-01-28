@@ -86,6 +86,8 @@
 
 <div class="top-bar">
     <a th:href="@{/booking/new}" class="add-btn">➕ New Booking</a>
+
+    <a th:href="@{/}" class="add-btn">🏠 Home</a>
 </div>
 
 <table>
@@ -96,32 +98,54 @@
         <th>Hotel</th>
         <th>Room</th>
         <th>Check-In Date</th>
-        <th>Journey Date</th>
+        <th>Check-Out Date</th>
         <th>Status</th>
-        <th>Action</th>
+        <th>Payment</th>
+        <th>Actions</th>
     </tr>
     </thead>
 
     <tbody>
     <tr th:each="b : ${bookings}">
         <td th:text="${b.id}"></td>
-
-        <td th:text="${b.customer.name}"></td>
-
-        <td th:text="${b.hotel.name}"></td>
-
-        <td th:text="${b.room.roomNumber}"></td>
-
-        <!-- LocalDate fields -->
-        <td th:text="${b.checkInDate}"></td>
+        <td>
+            <a th:href="@{/customer/find/{id}(id=${b.customer.id})}"
+               th:text="${b.customer.name}"
+               style="color:#27ae60; font-weight:bold; text-decoration:none;">
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/hotel/find/{id}(id=${b.hotel.id})}"
+               th:text="${b.hotel.name}"
+               style="color:#27ae60; font-weight:bold; text-decoration:none;">
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/room/find/{id}(id=${b.room.id})}"
+               th:text="${b.room.id}"
+               style="color:#27ae60; font-weight:bold; text-decoration:none;">
+            </a>
+        </td>        <td th:text="${b.checkInDate}"></td>
         <td th:text="${b.checkOutDate}"></td>
-
-        <!-- Enum -->
         <td th:text="${b.status}"></td>
 
+
+        <!-- PAYMENT DETAILS -->
         <td>
-            <a th:href="@{/booking/edit/{id}(id=${b.id})}"
-               class="edit">✏ Edit</a>
+            <a th:if="${b.payment != null}"
+               th:href="@{/payment/find/{id}(id=${b.payment.id})}"
+               th:text="${b.payment.id}"
+               style="color:#3498db; font-weight:bold; text-decoration:none;">
+            </a>
+
+
+            <span th:if="${b.payment == null}">
+-
+</span>
+        </td>
+
+        <td>
+            <a th:href="@{/booking/edit/{id}(id=${b.id})}" class="edit">✏ Edit</a>
 
             <form th:action="@{/booking/delete/{id}(id=${b.id})}"
                   method="post"
@@ -130,9 +154,7 @@
 
                 <input type="hidden" name="_method" value="delete"/>
 
-                <button type="submit" class="delete">
-                    🗑 Delete
-                </button>
+                <button type="submit" class="delete">🗑 Delete</button>
             </form>
         </td>
     </tr>
