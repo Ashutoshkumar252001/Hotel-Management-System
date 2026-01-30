@@ -84,7 +84,7 @@
         <label>Rating</label>
         <select th:field="*{rating}" required>
             <option value="">-- Select Rating --</option>
-            <option th:each="r : ${T(com.hotel_itc.enums.HotelRating).values()}"
+            <option th:each="r : ${T(com.hotel.enums.HotelRating).values()}"
                     th:value="${r}"
                     th:text="${r}">
             </option>
