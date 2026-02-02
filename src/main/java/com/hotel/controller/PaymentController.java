@@ -42,7 +42,7 @@ public class PaymentController {
 
         }catch (Exception e){
             model.addAttribute("error",e.getMessage());
-            model.addAttribute("payments",null);
+            model.addAttribute("payments",List.of());
 
         }
         return "payment";

@@ -4,60 +4,107 @@
     <title>Hotel Form</title>
 
     <style>
+        :root {
+            --bg-dark: #020617;
+            --card-bg: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.15);
+            --text-light: #e5e7eb;
+            --accent: #38bdf8;
+            --accent-dark: #0ea5e9;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            width: 400px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 420px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-size: 24px;
         }
 
         label {
             display: block;
-            margin-top: 10px;
-            font-weight: bold;
+            margin-top: 14px;
+            font-weight: 600;
+            font-size: 14px;
         }
 
         input, select {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 6px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 14px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56,189,248,0.25);
+        }
+
+        select option {
+            background: #020617;
+            color: white;
         }
 
         button {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 22px;
+            padding: 12px;
             width: 100%;
-            background: #3498db;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border: none;
             color: white;
             font-size: 15px;
-            border-radius: 5px;
+            font-weight: bold;
+            border-radius: 25px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(56,189,248,0.4);
         }
 
         button:hover {
-            background: #2980b9;
+            transform: scale(1.05);
         }
 
         a {
             display: block;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
             text-decoration: none;
-            color: #3498db;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -66,7 +113,7 @@
 
 <div class="container">
 
-    <h2 th:text="${hotel.id == null ? 'Add Hotel' : 'Edit Hotel'}"></h2>
+    <h2 th:text="${hotel.id == null ? '🏨 Add Hotel' : '✏ Edit Hotel'}"></h2>
 
     <form th:action="@{/hotel/save}"
           th:object="${hotel}"

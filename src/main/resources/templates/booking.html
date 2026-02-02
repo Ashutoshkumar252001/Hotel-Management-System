@@ -4,16 +4,30 @@
     <title>Booking Management</title>
 
     <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.15);
+            --text-light: #e5e7eb;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --warning: #facc15;
+            --success: #22c55e;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
             margin: 0;
-            padding: 20px;
+            padding: 25px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: var(--text-light);
         }
 
         h2 {
             text-align: center;
             margin-bottom: 15px;
+            font-size: 26px;
+            letter-spacing: 1px;
         }
 
         .message {
@@ -22,57 +36,104 @@
             margin-bottom: 10px;
         }
 
-        .success { color: green; }
-        .error { color: red; }
+        .success { color: var(--success); }
+        .error { color: var(--danger); }
 
         .top-bar {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
         }
 
-        .add-btn {
-            padding: 10px 15px;
-            background: #3498db;
-            color: white;
+        .btn {
+            padding: 10px 18px;
+            border-radius: 25px;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), #0ea5e9);
+            box-shadow: 0 6px 18px rgba(56,189,248,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 10px 30px rgba(56,189,248,0.6);
+        }
+
+        /* ===== Table ===== */
+        .table-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
         }
 
         th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            padding: 14px 10px;
             text-align: center;
+            border-bottom: 1px solid var(--border);
         }
 
         th {
-            background: #2c3e50;
-            color: white;
+            color: #f8fafc;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
         }
 
-        .edit {
-            background: #f1c40f;
-            padding: 5px 10px;
+        tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        a.link {
+            color: var(--success);
+            font-weight: 600;
             text-decoration: none;
+        }
+
+        a.link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== Actions ===== */
+        .edit {
+            background: var(--warning);
+            padding: 6px 12px;
+            border-radius: 6px;
             color: black;
-            border-radius: 4px;
+            text-decoration: none;
             font-weight: bold;
+            margin-right: 6px;
         }
 
         .delete {
-            background: #e74c3c;
+            background: var(--danger);
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        .edit:hover,
+        .delete:hover {
+            opacity: 0.85;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -85,81 +146,85 @@
 <p th:if="${error}" th:text="${error}" class="message error"></p>
 
 <div class="top-bar">
-    <a th:href="@{/booking/new}" class="add-btn">➕ New Booking</a>
-
-    <a th:href="@{/}" class="add-btn">🏠 Home</a>
+    <a th:href="@{/booking/new}" class="btn">➕ New Booking</a>
+    <a th:href="@{/}" class="btn">🏠 Home</a>
 </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Customer</th>
-        <th>Hotel</th>
-        <th>Room</th>
-        <th>Check-In Date</th>
-        <th>Check-Out Date</th>
-        <th>Status</th>
-        <th>Payment</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
+<div class="table-wrapper">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Hotel</th>
+            <th>Room</th>
+            <th>Check-In</th>
+            <th>Check-Out</th>
+            <th>Payment Mode</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each="b : ${bookings}">
-        <td th:text="${b.id}"></td>
-        <td>
-            <a th:href="@{/customer/find/{id}(id=${b.customer.id})}"
-               th:text="${b.customer.name}"
-               style="color:#27ae60; font-weight:bold; text-decoration:none;">
-            </a>
-        </td>
-        <td>
-            <a th:href="@{/hotel/find/{id}(id=${b.hotel.id})}"
-               th:text="${b.hotel.name}"
-               style="color:#27ae60; font-weight:bold; text-decoration:none;">
-            </a>
-        </td>
-        <td>
-            <a th:href="@{/room/find/{id}(id=${b.room.id})}"
-               th:text="${b.room.id}"
-               style="color:#27ae60; font-weight:bold; text-decoration:none;">
-            </a>
-        </td>        <td th:text="${b.checkInDate}"></td>
-        <td th:text="${b.checkOutDate}"></td>
-        <td th:text="${b.status}"></td>
+        <tbody>
+        <tr th:each="b : ${bookings}">
+            <td th:text="${b.id}"></td>
 
+            <td>
+                <a class="link"
+                   th:href="@{/customer/find/{id}(id=${b.customer.id})}"
+                   th:text="${b.customer.name}">
+                </a>
+            </td>
 
-        <!-- PAYMENT DETAILS -->
-        <td>
-            <a th:if="${b.payment != null}"
-               th:href="@{/payment/find/{id}(id=${b.payment.id})}"
-               th:text="${b.payment.id}"
-               style="color:#3498db; font-weight:bold; text-decoration:none;">
-            </a>
+            <td>
+                <a class="link"
+                   th:href="@{/hotel/find/{id}(id=${b.hotel.id})}"
+                   th:text="${b.hotel.name}">
+                </a>
+            </td>
 
+            <td>
+                <a class="link"
+                   th:href="@{/room/find/{id}(id=${b.room.id})}"
+                   th:text="${b.room.id}">
+                </a>
+            </td>
 
-            <span th:if="${b.payment == null}">
--
-</span>
-        </td>
+            <td th:text="${b.checkInDate}"></td>
+            <td th:text="${b.checkOutDate}"></td>
 
-        <td>
-            <a th:href="@{/booking/edit/{id}(id=${b.id})}" class="edit">✏ Edit</a>
+            <td>
+                <a th:if="${b.payment != null}"
+                   class="link"
+                   th:href="@{/payment/find/{id}(id=${b.payment.id})}"
+                   th:text="${b.payment.paymentMode}">
+                </a>
+                <span th:if="${b.payment == null}">-</span>
+            </td>
 
-            <form th:action="@{/booking/delete/{id}(id=${b.id})}"
-                  method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Are you sure?')">
+            <td>
+            <span th:if="${b.payment != null}"
+                  th:text="${b.payment.amount}"></span>
+                <span th:if="${b.payment == null}">-</span>
+            </td>
 
-                <input type="hidden" name="_method" value="delete"/>
+            <td>
+                <a th:href="@{/booking/edit/{id}(id=${b.id})}" class="edit">✏ Edit</a>
 
-                <button type="submit" class="delete">🗑 Delete</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+                <form th:action="@{/booking/delete/{id}(id=${b.id})}"
+                      method="post"
+                      style="display:inline"
+                      onsubmit="return confirm('Are you sure?')">
+
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="delete">🗑 Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

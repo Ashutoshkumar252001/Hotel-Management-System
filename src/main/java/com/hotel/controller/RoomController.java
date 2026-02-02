@@ -51,7 +51,7 @@ public class RoomController {
             }
                 catch (Exception e)
             {
-                model.addAttribute("error", "error during room data creation");
+                model.addAttribute("error", e.getMessage());
             }
             }
 
@@ -126,5 +126,7 @@ public class RoomController {
         }
         return "room";
     }
+
+
 }
 

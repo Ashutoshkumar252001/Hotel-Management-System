@@ -3,6 +3,7 @@ package com.hotel.controller;
 import com.hotel.exception.BookingNotFoundException;
 import com.hotel.models.BookingModel;
 import com.hotel.models.PaymentModel;
+import com.hotel.models.RoomModel;
 import com.hotel.services.*;
 import com.hotel.validator.BookingDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,30 +51,27 @@ public class BookingController
 
     @PostMapping("/save")
     public String saveBooking(@ModelAttribute BookingModel booking, Model model) {
-        model.addAttribute("customers",customerServices.findAllCustomer());
-        model.addAttribute("hotels",hotelServices.findAllHotels());
-        model.addAttribute("rooms",roomServices.findAllRooms());
+//        model.addAttribute("customers",customerServices.findAllCustomer());
+//        model.addAttribute("hotels",hotelServices.findAllHotels());
+//        model.addAttribute("rooms",roomServices.findAllRooms());
 
-        if(booking.getId()==null){
-         List<String> errors = bookingDataValidator.validate(booking);
-         if(!errors.isEmpty())
-         {
-             model.addAttribute("error", errors);
 
-             return "booking-form";
-         }
-         else
-         {
-             try
-             {
-                 bookingServices.saveBooking(booking);
-                 model.addAttribute("success", "Booking created successfully");
-             }
-             catch (Exception e)
-             {
-                 model.addAttribute("error", "Error during booking data updation");
-             }
-         }
+        if(booking.getId()==null) {
+            List<String> errors = bookingDataValidator.validate(booking);
+            if (!errors.isEmpty()) {
+                model.addAttribute("error", errors);
+
+                return "booking-form";
+            } else {
+                try {
+                    bookingServices.saveBooking(booking);
+                    model.addAttribute("success", "Booking created successfully");
+                } catch (Exception e) {
+                    model.addAttribute("error", e.getMessage());
+                }
+            }
+        }
+        else{
          try{
              bookingServices.saveBooking(booking);
              model.addAttribute("success","Booking updated successfully");
@@ -152,5 +150,11 @@ public class BookingController
             model.addAttribute("bookings",null);
         }
         return "booking";
+    }
+
+    @GetMapping("/rooms/by-hotel/{hotelId}")
+    @ResponseBody
+    public List<RoomModel> getRoomsByHotel(@PathVariable Long hotelId) {
+        return roomServices.findByHotelId(hotelId);
     }
 }

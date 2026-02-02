@@ -1,6 +1,7 @@
 package com.hotel.services.impl;
 
 
+import com.hotel.enums.PaymentMode;
 import com.hotel.enums.PaymentStatus;
 import com.hotel.exception.BookingNotFoundException;
 import com.hotel.models.*;
@@ -54,18 +55,20 @@ public class BookingServicesImpl implements BookingServices {
 
 
         if (booking.getId() == null) {
+            booking.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
+            booking.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
+            booking.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
 
 
             PaymentModel payment = new PaymentModel();
 
-            payment.setPaymentMode("CREDIT CARD");
+            payment.setPaymentMode(booking.getPayment().getPaymentMode());
             payment.setPaymentStatus(PaymentStatus.PAID);
-            long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
-            payment.setAmount(days * booking.getRoom().getPricePerNight());
+            Long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
+            payment.setAmount(days*booking.getRoom().getPricePerNight());
+            payment.setBooking(booking);
             booking.setPayment(payment);
-            booking.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
-            booking.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
-            booking.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+
             bookingRepo.save(booking);
         } else {
             Optional<BookingModel> bookingOpt = bookingRepo.findById(booking.getId());
@@ -76,25 +79,32 @@ public class BookingServicesImpl implements BookingServices {
             }
 
                 BookingModel b = bookingOpt.get();
-            long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
+            b.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
+            b.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
+            b.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+
+            Long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
 
 
 
-            PaymentModel paymentModel = paymentServices.getPaymentById(booking.getPayment().getId());
-               paymentModel.setBooking(booking);
+            PaymentModel paymentModel = b.getPayment();
 
-                b.setPayment(paymentModel);
-                b.setHotel(booking.getHotel());
-                b.setRoom(booking.getRoom());
-                b.setCustomer(booking.getCustomer());
+
             paymentModel.setAmount(days * booking.getRoom().getPricePerNight());
-            paymentModel.setPaymentMode("CREDIT CARD");
-            booking.setPayment(paymentModel);
+            paymentModel.setPaymentMode(b.getPayment().getPaymentMode());
+            paymentModel.setPaymentStatus(PaymentStatus.PAID);
+
+
             b.setCheckInDate(booking.getCheckInDate());
                 b.setCheckOutDate(booking.getCheckOutDate());
                 b.setStatus(booking.getStatus());
 
-                bookingRepo.save(b);
+
+
+            b.setPayment(paymentModel);
+
+
+            bookingRepo.save(b);
             }
         }
 

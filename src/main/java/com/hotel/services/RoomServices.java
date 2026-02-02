@@ -15,5 +15,7 @@ public interface RoomServices {
 
 
     void deleteRoom(Long id);
+
+    List<RoomModel> findByHotelId(Long hotelId);
 }
 

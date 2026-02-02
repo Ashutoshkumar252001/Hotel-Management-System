@@ -1,5 +1,6 @@
 package com.hotel.models;
 
+import com.hotel.enums.PaymentMode;
 import com.hotel.enums.PaymentStatus;
 import jakarta.persistence.*;
 
@@ -10,10 +11,12 @@ public class PaymentModel extends BaseModel {
 
 
     @OneToOne
+    @JoinColumn(name = "booking_id",unique = true)
     private BookingModel booking;
     private Double amount;
 
-    private String paymentMode;
+    @Enumerated(EnumType.STRING)
+    private PaymentMode paymentMode;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
@@ -35,11 +38,11 @@ public class PaymentModel extends BaseModel {
     }
 
 
-    public String getPaymentMode() {
+    public PaymentMode getPaymentMode() {
         return paymentMode;
     }
 
-    public void setPaymentMode(String paymentMode) {
+    public void setPaymentMode(PaymentMode paymentMode) {
         this.paymentMode = paymentMode;
     }
 

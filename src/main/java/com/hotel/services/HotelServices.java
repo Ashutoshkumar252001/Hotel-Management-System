@@ -14,7 +14,7 @@ public interface HotelServices {
 
     void saveHotel(HotelModel hotel);
 
-    Map<HotelModel,List<RoomModel>> getHotelMap();
+    //Map<HotelModel,List<RoomModel>> getHotelMap();
 
 
     void deleteHotel(Long id);

@@ -17,7 +17,7 @@ public class BookingModel extends BaseModel {
     @ManyToOne
     private CustomerModel customer;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     private PaymentModel payment;
 
     @OneToOne
@@ -25,7 +25,7 @@ public class BookingModel extends BaseModel {
 
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-   private LocalDate checkInDate;
+    private LocalDate checkInDate;
 
     public HotelModel getHotel() {
         return hotel;
@@ -36,7 +36,7 @@ public class BookingModel extends BaseModel {
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-   private LocalDate checkOutDate;
+    private LocalDate checkOutDate;
 
 
 

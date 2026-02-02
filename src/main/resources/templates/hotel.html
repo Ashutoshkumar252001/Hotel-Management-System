@@ -4,75 +4,130 @@
     <title>Hotel Management</title>
 
     <style>
+        :root {
+            --bg-dark: #020617;
+            --card-bg: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.15);
+            --text-light: #e5e7eb;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #facc15;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
             margin: 0;
-            padding: 20px;
+            padding: 30px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: var(--text-light);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 26px;
         }
 
         .message {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .success { color: green; }
-        .error { color: red; }
+        .success { color: var(--success); }
+        .error { color: var(--danger); }
 
         .top-bar {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .add-btn,
+        .home-btn {
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
         }
 
         .add-btn {
-            padding: 10px 15px;
-            background: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), #0ea5e9);
+            box-shadow: 0 6px 18px rgba(56,189,248,0.4);
+        }
+
+        .home-btn {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        .add-btn:hover,
+        .home-btn:hover {
+            transform: scale(1.05);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
 
         th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            padding: 14px;
             text-align: center;
         }
 
         th {
-            background: #2c3e50;
-            color: white;
+            background: rgba(0,0,0,0.4);
+            font-size: 15px;
+        }
+
+        tr:not(:last-child) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.05);
         }
 
         .edit {
-            background: #f1c40f;
-            padding: 5px 10px;
+            background: linear-gradient(135deg, var(--warning), #eab308);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
             text-decoration: none;
             color: black;
-            border-radius: 4px;
-            font-weight: bold;
+            margin-right: 6px;
+            display: inline-block;
         }
 
         .delete {
-            background: #e74c3c;
+            background: linear-gradient(135deg, var(--danger), #dc2626);
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
+            padding: 7px 14px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        .edit:hover,
+        .delete:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -86,12 +141,7 @@
 
 <div class="top-bar">
     <a th:href="@{/hotel/new}" class="add-btn">➕ New Hotel</a>
-
-    <th>
-
-        &nbsp;
-        <a th:href="@{/}" class="home-btn">🏠 Home</a>
-    </th>
+    <a th:href="@{/}" class="home-btn">🏠 Home</a>
 </div>
 
 <table>
@@ -102,7 +152,6 @@
         <th>Address</th>
         <th>Rating</th>
         <th>Action</th>
-
     </tr>
     </thead>
 
@@ -114,22 +163,17 @@
         <td th:text="${h.rating}"></td>
 
         <td>
-            <a th:href="@{/hotel/edit/{id}(id=${h.id})}"
-               class="edit">✏ Edit</a>
+            <a th:href="@{/hotel/edit/{id}(id=${h.id})}" class="edit">✏ Edit</a>
 
             <form th:action="@{/hotel/delete/{id}(id=${h.id})}"
                   method="post"
                   onsubmit="return confirm('Are you sure?')"
                   style="display:inline;">
 
-                <!-- 🔥 Ye line IMPORTANT hai -->
                 <input type="hidden" name="_method" value="DELETE"/>
 
-                <button type="submit" class="delete">
-                    🗑 Delete
-                </button>
+                <button type="submit" class="delete">🗑 Delete</button>
             </form>
-
         </td>
     </tr>
     </tbody>

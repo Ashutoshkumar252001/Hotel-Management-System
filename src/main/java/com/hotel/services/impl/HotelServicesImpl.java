@@ -65,21 +65,21 @@ public class HotelServicesImpl implements HotelServices {
 
     }
 
-    @Override
-    public Map<HotelModel, List<RoomModel>> getHotelMap() {
-
-        List<HotelModel> li = findAllHotels();
-        Map<HotelModel,List<RoomModel>> map1 = new HashMap<>();
-        for(HotelModel h:li){
-
-           List<RoomModel> rooms = roomRepo.findByHotelModel(h);
-           map1.put(h,rooms);
-
-
-
-        }
-        return map1;
-    }
+//    @Override
+//    public Map<HotelModel, List<RoomModel>> getHotelMap() {
+//
+//        List<HotelModel> li = findAllHotels();
+//        Map<HotelModel,List<RoomModel>> map1 = new HashMap<>();
+//        for(HotelModel h:li){
+//
+//           List<RoomModel> rooms = roomRepo.findByHotelModel(h);
+//           map1.put(h,rooms);
+//
+//
+//
+//        }
+//        return map1;
+//    }
 
     @Override
     public void deleteHotel(Long id) {

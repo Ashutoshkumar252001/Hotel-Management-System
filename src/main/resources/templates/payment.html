@@ -1,62 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Payment List</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Payment Management</title>
 
     <style>
+        :root {
+            --bg-dark: #020617;
+            --card-bg: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.15);
+            --text-light: #e5e7eb;
+            --accent: #38bdf8;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #f6f9fc, #e9eff5);
             margin: 0;
-            padding: 0;
+            padding: 30px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: var(--text-light);
+            min-height: 100vh;
         }
 
         h2 {
             text-align: center;
-            margin-top: 25px;
-            color: #2c3e50;
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .btn {
-            background: #3498db;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #2c80b4;
+            margin-bottom: 25px;
+            font-size: 26px;
         }
 
         .message {
             text-align: center;
-            margin: 10px;
             font-weight: bold;
+            margin-bottom: 15px;
         }
 
-        .success { color: green; }
-        .error { color: red; }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
 
         .table-container {
-            width: 95%;
-            margin: auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
         table {
@@ -65,29 +51,54 @@
         }
 
         th {
-            background: #2c3e50;
+            background: rgba(255,255,255,0.12);
             color: white;
-            padding: 12px;
+            padding: 14px;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 14px;
             text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         tr:hover {
-            background: #f4f6f9;
+            background: rgba(255,255,255,0.06);
         }
 
+        a {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Payment Status Badges */
         .paid {
-            color: green;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #facc15;
             font-weight: bold;
         }
 
         .unpaid {
-            color: red;
+            color: #ef4444;
             font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -99,18 +110,13 @@
 <p th:if="${success}" th:text="${success}" class="message success"></p>
 <p th:if="${error}" th:text="${error}" class="message error"></p>
 
-<div class="top-bar">
-    <a th:href="@{/}" class="btn">🏠 Home</a>
-    <a th:href="@{/booking/list}" class="btn">📘 Bookings</a>
-</div>
-
 <div class="table-container">
 
     <table>
         <thead>
         <tr>
             <th>Payment ID</th>
-            <th>Booking ID</th>
+            <th>Booking</th>
             <th>Amount</th>
             <th>Payment Mode</th>
             <th>Status</th>
@@ -121,27 +127,30 @@
         <tr th:each="p : ${payments}">
             <td th:text="${p.id}"></td>
 
-                <td>
-               <span th:if="${p.booking != null}">
-            <a th:href="@{/booking/find/{id}(id=${p.booking.id})}"
-               th:text="${p.booking.id}"
-               style="color:#2980b9; font-weight:bold; text-decoration:none;">
-            </a>
-                </span>
-                    <span th:if="${p.booking == null}">
-                   -
-                 </span>
-                </td>
+            <td>
+            <span th:if="${p.booking != null}">
+                <a th:href="@{/booking/find/{id}(id=${p.booking.id})}"
+                   th:text="'Booking #' + ${p.booking.id}">
+                </a>
+            </span>
+                <span th:if="${p.booking == null}">—</span>
+            </td>
 
-            <td th:text="${p.amount}"></td>
+            <td>₹ <span th:text="${p.amount}"></span></td>
 
             <td th:text="${p.paymentMode}"></td>
 
             <td>
-                <span th:text="${p.paymentStatus}"
-                      th:classappend="${p.paymentStatus.name() == 'PAID'} ? 'paid' : 'unpaid'">
-                </span>
+            <span th:text="${p.paymentStatus}"
+                  th:classappend="
+                    ${p.paymentStatus} == 'PAID' ? 'paid' :
+                    (${p.paymentStatus} == 'PENDING' ? 'pending' : 'unpaid')">
+            </span>
             </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(payments)}">
+            <td colspan="5" class="empty">No payments available</td>
         </tr>
         </tbody>
     </table>

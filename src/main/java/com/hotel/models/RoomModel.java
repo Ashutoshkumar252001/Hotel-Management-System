@@ -2,6 +2,7 @@ package com.hotel.models;
 
 import com.hotel.enums.RoomStatus;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 
 @Entity
@@ -12,7 +13,7 @@ public class RoomModel extends BaseModel {
    private HotelModel hotelModel;
    private Integer roomNumber;
    private String type;
-   private double pricePerNight;
+   private Double pricePerNight;
 
     @Enumerated(EnumType.STRING)
    private RoomStatus status;
@@ -25,11 +26,11 @@ public class RoomModel extends BaseModel {
         this.roomNumber = roomNumber;
     }
 
-    public double getPricePerNight() {
+    public Double getPricePerNight() {
         return pricePerNight;
     }
 
-    public void setPricePerNight(double pricePerNight) {
+    public void setPricePerNight(Double pricePerNight) {
         this.pricePerNight = pricePerNight;
     }
 
