@@ -288,6 +288,120 @@
             }
 
         }
+        /* ===== MODAL ===== */
+
+.modal{
+    display:none;
+    position:fixed;
+    z-index:999;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    width:90%;
+    max-width:700px;
+    background:#0f172a;
+    padding:40px;
+    border-radius:20px;
+    position:relative;
+    animation:popup 0.3s ease;
+}
+
+@keyframes popup{
+    from{
+        transform:scale(0.7);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.close-btn{
+    position:absolute;
+    right:25px;
+    top:15px;
+    font-size:35px;
+    cursor:pointer;
+    color:white;
+}
+
+.modal-content h1{
+    margin-bottom:20px;
+    color:#38bdf8;
+}
+
+.modal-content p{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.modal-rooms{
+    margin-top:30px;
+}
+
+.room-item{
+    display:inline-block;
+    margin:8px;
+    padding:10px 16px;
+    border-radius:20px;
+    background:#22c55e;
+    color:white;
+}
+        /* ===== DROPDOWN ===== */
+
+.dropdown{
+    position:relative;
+    display:inline-block;
+}
+
+.dropbtn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.dropbtn:hover{
+    color:#38bdf8;
+}
+
+.dropdown-content{
+    display:none;
+    position:absolute;
+    background:#0f172a;
+    min-width:200px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+    z-index:1000;
+}
+
+.dropdown-content a{
+    color:white;
+    padding:14px 18px;
+    text-decoration:none;
+    display:block;
+    transition:0.3s;
+}
+
+.dropdown-content a:hover{
+    background:#1e293b;
+    color:#38bdf8;
+}
+
+.dropdown:hover .dropdown-content{
+    display:block;
+}
 
     </style>
 
@@ -309,9 +423,11 @@
             Home
         </a>
 
-        <a th:href="@{/customer/new}">
-            customer
+        <a th:href="@{/customer/list}"
+            sec:authorize="hasRole('ADMIN')">
+            customers
         </a>
+
 
         <a th:href="@{/admin/hotel/list}">
             Hotels
@@ -321,21 +437,31 @@
             Rooms
         </a>
 
-        <a th:href="@{/admin/booking/list}">
-            Bookings
-        </a>
+        <div class="dropdown">
+
+            <button class="dropbtn">
+                Bookings ▾
+            </button>
+
+            <div class="dropdown-content">
+
+                <a th:href="@{/booking/list}">
+                    Booking List
+                </a>
+
+                <a th:href="@{/booking/new}">
+                    New Booking
+                </a>
+
+            </div>
+
+        </div>
 
         <a th:href="@{/payment/}">
             Payments
         </a>
-        <a th:href="@{/admin/booking/list}"
-           sec:authorize="hasRole('ADMIN')">
 
-            Bookings
-
-        </a>
-
-        <a th:href="@{/admin/booking/my-bookings}"
+        <a th:href="@{/booking/my-bookings}"
            sec:authorize="hasRole('CUSTOMER')">
 
             My Bookings
@@ -480,9 +606,58 @@
 
         </div>
 
-        <a th:href="@{/hotel/view/{id}(id=${hotel.id})}">
+        <a href="#"
+
+           class="view-btn"
+
+           th:data-name="${hotel.name}"
+
+           th:data-address="${hotel.address}"
+
+           th:data-rooms="${#strings.listJoin(hotel.rooms.![roomType], ', ')}"
+
+           onclick="showHotelDetails(this)">
+
             View Hotel
+
         </a>
+
+    </div>
+
+</div>
+
+<!-- ===== HOTEL DETAILS MODAL ===== -->
+
+<div id="hotelModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close-btn"
+              onclick="closeModal()">
+
+            &times;
+
+        </span>
+
+        <h1 id="modalHotelName">
+            Hotel Name
+        </h1>
+
+        <p id="modalHotelAddress">
+            Address
+        </p>
+
+        <div class="modal-rooms">
+
+            <h3>
+                Available Rooms
+            </h3>
+
+            <div id="modalRoomList">
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -556,6 +731,61 @@
         });
 
     }
+
+    function showHotelDetails(button){
+
+    const hotelName =
+        button.dataset.name;
+
+    const hotelAddress =
+        button.dataset.address;
+
+    const rooms =
+        button.dataset.rooms;
+
+    document.getElementById(
+        "modalHotelName"
+    ).innerText = hotelName;
+
+    document.getElementById(
+        "modalHotelAddress"
+    ).innerText =
+        "📍 " + hotelAddress;
+
+    const roomContainer =
+        document.getElementById(
+            "modalRoomList"
+        );
+
+    roomContainer.innerHTML = "";
+
+    const roomArray =
+        rooms.split(",");
+
+    roomArray.forEach(room => {
+
+        const span =
+            document.createElement("span");
+
+        span.classList.add("room-item");
+
+        span.innerText = room;
+
+        roomContainer.appendChild(span);
+
+    });
+
+    document.getElementById(
+        "hotelModal"
+    ).style.display = "flex";
+}
+
+function closeModal(){
+
+    document.getElementById(
+        "hotelModal"
+    ).style.display = "none";
+}
 
 </script>
 

@@ -26,18 +26,29 @@ public class SecurityConfig { // this is the core of integration
                         .requestMatchers("/admin/room/**")
                         .hasAnyRole(Role.ADMIN.getRoleName())
 
-                        .requestMatchers("/admin/booking/list")
+                        .requestMatchers("/booking/list")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/customer/list")
                         .hasRole("ADMIN")
 
 
                         .requestMatchers("/hotel/list/",
                                                    "/hotel/find/**",
                                                    "/room/List/",
-                                                   "/room/find**",
-                                                    "/customer/**"
+                                                   "/room/find**"
+
                         )
 
                         .hasAnyRole("USER","ADMIN")
+
+
+                        .requestMatchers(
+                                "/customer/new**",
+                                "/customer/save**"
+                                )
+                        .hasRole("USER")
+
 
                         .requestMatchers(
                                 "/booking/new",
@@ -45,11 +56,11 @@ public class SecurityConfig { // this is the core of integration
                                 "/booking/edit/**",
                                 "/booking/find/**",
                                 "/booking/delete/**"
-                        )
-                        .hasAnyRole("USER", "ADMIN")
 
-                        .requestMatchers("/USER/**")
-                        .hasAnyRole("USER","ADMIN")
+                        )
+                        .hasAnyRole("USER")
+
+
 
                         // List, view, find pages -- any authenticated user
                         .anyRequest().authenticated()

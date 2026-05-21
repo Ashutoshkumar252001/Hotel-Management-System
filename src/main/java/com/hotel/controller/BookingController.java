@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/booking")
+@RequestMapping("/booking")
 public class BookingController
 {
 
@@ -159,6 +159,10 @@ public class BookingController
         }
         return "booking";
     }
+
+
+
+
 
 
 
