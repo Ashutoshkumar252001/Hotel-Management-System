@@ -143,7 +143,7 @@
 <p th:if="${error}" th:text="${error}" class="message error"></p>
 
 <div class="top-bar">
-    <a th:href="@{/room/new}" class="add-btn">➕ Add Room</a>
+    <a th:href="@{/admin/room/new}" class="add-btn">➕ Add Room</a>
     <a th:href="@{/}" class="home-btn">🏠 Home</a>
 </div>
 
@@ -169,15 +169,15 @@
             <td class="price">₹ <span th:text="${r.pricePerNight}"></span></td>
 
             <td>
-                <a th:href="@{/hotel/find/{id}(id=${r.hotelModel.id})}"
+                <a th:href="@{/admin/hotel/find/{id}(id=${r.hotelModel.id})}"
                    th:text="${r.hotelModel.name}">
                 </a>
             </td>
 
             <td>
-                <a th:href="@{/room/edit/{id}(id=${r.id})}" class="edit">✏ Edit</a>
+                <a th:href="@{/admin/room/edit/{id}(id=${r.id})}" class="edit">✏ Edit</a>
 
-                <form th:action="@{/room/delete/{id}(id=${r.id})}"
+                <form th:action="@{/admin/room/delete/{id}(id=${r.id})}"
                       method="post"
                       style="display:inline;"
                       onsubmit="return confirm('Delete this room?')">

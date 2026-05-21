@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Signup</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial,sans-serif;
+        }
+
+        body{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            background: linear-gradient(135deg,#0f172a,#1e293b);
+        }
+
+        .signup-box{
+            width:450px;
+            background: rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+            backdrop-filter: blur(10px);
+            color:white;
+        }
+
+        .signup-box h2{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        .input-box{
+            margin-bottom:18px;
+        }
+
+        .input-box input{
+            width:100%;
+            padding:14px;
+            border:none;
+            outline:none;
+            border-radius:10px;
+        }
+
+        .roles{
+            margin-bottom:20px;
+        }
+
+        .roles label{
+            margin-right:15px;
+        }
+
+        .btn{
+            width:100%;
+            padding:14px;
+            border:none;
+            background:#38bdf8;
+            color:white;
+            border-radius:10px;
+            font-size:18px;
+            cursor:pointer;
+        }
+
+        .btn:hover{
+            background:#0ea5e9;
+        }
+
+        .error{
+            margin-bottom:15px;
+            color:#f87171;
+        }
+
+        .login{
+            text-align:center;
+            margin-top:20px;
+        }
+
+        .login a{
+            color:#38bdf8;
+            text-decoration:none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="signup-box">
+
+    <h2>Create Account</h2>
+
+    <div th:if="${error}">
+        <div class="error" th:each="err : ${error}" th:text="${err}"></div>
+    </div>
+
+    <form th:action="@{/user-create}"
+          method="post"
+          th:object="${user}">
+
+        <div class="input-box">
+            <input type="text"
+                   th:field="*{userName}"
+                   placeholder="Enter Username"
+                   required>
+        </div>
+
+        <div class="input-box">
+            <input type="email"
+                   th:field="*{email}"
+                   placeholder="Enter Email"
+                   required>
+        </div>
+
+        <div class="input-box">
+            <input type="password"
+                   th:field="*{passWord}"
+                   placeholder="Enter Password"
+                   required>
+        </div>
+
+        <div class="roles">
+
+            <h4>Select Roles</h4>
+
+            <div th:each="role : ${availableRoles}">
+                <label>
+                    <input type="checkbox"
+                           name="selectedRoles"
+                           th:value="${role}">
+                    <span th:text="${role}"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn">
+            Register
+        </button>
+
+    </form>
+
+    <div class="login">
+        Already have account ?
+        <a th:href="@{/login}">Login</a>
+    </div>
+
+</div>
+
+</body>
+</html>

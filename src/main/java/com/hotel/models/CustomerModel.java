@@ -2,6 +2,7 @@ package com.hotel.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -9,7 +10,8 @@ import jakarta.persistence.Table;
 @Table(name = "customers")
 public class CustomerModel extends BaseModel {
 
-
+    @OneToOne
+    private UserModel user;
     private String name;
     @Column(nullable = false,unique = true)
     private String phone;

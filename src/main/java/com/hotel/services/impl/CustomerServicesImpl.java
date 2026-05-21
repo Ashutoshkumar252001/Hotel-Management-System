@@ -2,6 +2,7 @@ package com.hotel.services.impl;
 
 import com.hotel.exception.CustomerNotFoundException;
 import com.hotel.models.CustomerModel;
+import com.hotel.models.UserModel;
 import com.hotel.repo.CustomerRepo;
 import com.hotel.services.CustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,15 @@ public class CustomerServicesImpl implements CustomerServices {
     private CustomerRepo customerRepo;
 
     @Override
-    public CustomerModel getCustomerById(Long id) throws CustomerNotFoundException {
+    public CustomerModel getCustomerById(Long id) throws CustomerNotFoundException
+    {
         Optional<CustomerModel> opt = customerRepo.findById(id);
-        if(opt.isPresent()){
+        if(opt.isPresent())
+        {
             return opt.get();
         }
-        else {
+        else
+        {
             throw new CustomerNotFoundException("Customer is Not Found for this ID:"+id);
         }
     }
@@ -49,6 +53,7 @@ public class CustomerServicesImpl implements CustomerServices {
             c.setId(customer.getId());
             c.setEmail(customer.getEmail());
             c.setName(customer.getName());
+            c.setPhone(customer.getPhone());
             customerRepo.save(c);
         }
 
@@ -65,4 +70,8 @@ public class CustomerServicesImpl implements CustomerServices {
         customerRepo.deleteById(id);
 
     }
+
+
+
+
 }

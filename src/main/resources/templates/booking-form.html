@@ -124,7 +124,7 @@
 
     <div th:if="${success}" class="success" th:text="${success}"></div>
 
-    <form th:action="@{/booking/save}" th:object="${booking}" method="post">
+    <form th:action="@{/admin/booking/save}" th:object="${booking}" method="post">
 
         <input type="hidden" th:field="*{id}" />
 
@@ -152,6 +152,7 @@
         <label>Room</label>
         <select id="roomSelect" th:field="*{room.id}" required>
             <option value="">-- Select Room --</option>
+
         </select>
 
         <!-- Dates -->
@@ -184,7 +185,7 @@
 
         if (!hotelId) return;
 
-        fetch('/booking/rooms/by-hotel/' + hotelId)
+        fetch('/admin/booking/rooms/by-hotel/' + hotelId)
             .then(response => response.json())
             .then(data => {
                 data.forEach(room => {

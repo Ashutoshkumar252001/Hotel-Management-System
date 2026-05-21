@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/hotel")
+@RequestMapping("admin/hotel")
 public class HotelController
 {
 
@@ -74,7 +74,7 @@ public class HotelController
         {
             HotelModel hotel = hotelServices.getHotelById(id);
             model.addAttribute("hotel", hotel);
-            model.addAttribute("rooms", roomServices.findAllRooms());
+            //model.addAttribute("rooms", roomServices.findAllRooms());
             return "hotel-form";
 
         }

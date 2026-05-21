@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login</title>
+
+  <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: Arial,sans-serif;
+    }
+
+    body{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        background: linear-gradient(135deg,#0f172a,#1e293b);
+    }
+
+    .login-box{
+        width:400px;
+        background: rgba(255,255,255,0.08);
+        padding:40px;
+        border-radius:20px;
+        backdrop-filter: blur(10px);
+        color:white;
+    }
+
+    .login-box h2{
+        text-align:center;
+        margin-bottom:30px;
+    }
+
+    .input-box{
+        margin-bottom:20px;
+    }
+
+    .input-box input{
+        width:100%;
+        padding:14px;
+        border:none;
+        outline:none;
+        border-radius:10px;
+    }
+
+    .btn{
+        width:100%;
+        padding:14px;
+        border:none;
+        background:#38bdf8;
+        color:white;
+        border-radius:10px;
+        font-size:18px;
+        cursor:pointer;
+    }
+
+    .btn:hover{
+        background:#0ea5e9;
+    }
+
+    .message{
+        text-align:center;
+        margin-bottom:15px;
+        color:#f87171;
+    }
+
+    .success{
+        color:#4ade80;
+    }
+
+    .register{
+        text-align:center;
+        margin-top:20px;
+    }
+
+    .register a{
+        color:#38bdf8;
+        text-decoration:none;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <h2>Login</h2>
+
+  <div th:if="${error}" class="message" th:text="${error}"></div>
+
+  <div th:if="${success}" class="message success" th:text="${success}"></div>
+
+  <form th:action="@{/login}" method="post">
+
+    <div class="input-box">
+      <input type="text"
+             name="username"
+             placeholder="Enter Username"
+             required>
+    </div>
+
+    <div class="input-box">
+      <input type="password"
+             name="password"
+             placeholder="Enter Password"
+             required>
+    </div>
+
+    <button type="submit" class="btn">
+      Login
+    </button>
+
+  </form>
+
+  <div class="register">
+    Don't have account ?
+    <a th:href="@{/register}">Signup</a>
+  </div>
+
+</div>
+
+</body>
+</html>
