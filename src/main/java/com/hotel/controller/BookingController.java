@@ -49,19 +49,7 @@ public class BookingController
         return "booking-form";
     }
 
-    @GetMapping("/my-bookings")
-    public String myBookings(Model model,
-                             Authentication authentication) {
 
-        String username = authentication.getName();
-
-        List<BookingModel> bookings =
-                bookingServices.findBookingsByCustomer(username);
-
-        model.addAttribute("bookings", bookings);
-
-        return "booking";
-    }
 
     @PostMapping("/save")
     public String saveBooking(@ModelAttribute BookingModel booking, Model model) {

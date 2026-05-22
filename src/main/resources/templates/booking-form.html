@@ -185,7 +185,7 @@
 
         if (!hotelId) return;
 
-        fetch('/admin/booking/rooms/by-hotel/' + hotelId)
+        fetch('/booking/rooms/by-hotel/' + hotelId)
             .then(response => response.json())
             .then(data => {
                 data.forEach(room => {

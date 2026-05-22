@@ -423,6 +423,10 @@
             Home
         </a>
 
+        <a th:href="@{/customer/new}">
+            customers
+        </a>
+
         <a th:href="@{/customer/list}"
             sec:authorize="hasRole('ADMIN')">
             customers
