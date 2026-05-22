@@ -2,6 +2,7 @@ package com.hotel.services;
 
 import com.hotel.exception.BookingNotFoundException;
 import com.hotel.models.BookingModel;
+import com.hotel.models.CustomerModel;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface BookingServices {
             throws BookingNotFoundException;
 
     List<BookingModel> findAllBookings();
+    List<BookingModel> findBookingsByCustomer(String username);
+
 
     void saveBooking(BookingModel booking);
 

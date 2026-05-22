@@ -1,230 +1,627 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
+
     <title>Booking Management</title>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --card-bg: rgba(255,255,255,0.08);
-            --border: rgba(255,255,255,0.15);
-            --text-light: #e5e7eb;
-            --accent: #38bdf8;
-            --danger: #ef4444;
-            --warning: #facc15;
-            --success: #22c55e;
+
+        :root{
+            --bg-dark:#020617;
+            --bg-light:#0f172a;
+            --card-bg:rgba(255,255,255,0.08);
+            --border:rgba(255,255,255,0.12);
+
+            --text:#f8fafc;
+            --muted:#cbd5e1;
+
+            --accent:#38bdf8;
+            --success:#22c55e;
+            --warning:#facc15;
+            --danger:#ef4444;
         }
 
-        body {
-            margin: 0;
-            padding: 25px;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #020617, #0f172a);
-            color: var(--text-light);
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 26px;
-            letter-spacing: 1px;
+        body{
+            background:linear-gradient(
+                    135deg,
+                    var(--bg-dark),
+                    var(--bg-light)
+            );
+
+            color:var(--text);
+            min-height:100vh;
+            padding:30px;
         }
 
-        .message {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
+        /* ===== PAGE TITLE ===== */
+
+        .page-title{
+            text-align:center;
+            margin-bottom:25px;
         }
 
-        .success { color: var(--success); }
-        .error { color: var(--danger); }
-
-        .top-bar {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
+        .page-title h1{
+            font-size:42px;
+            margin-bottom:10px;
+            color:#38bdf8;
         }
 
-        .btn {
-            padding: 10px 18px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            color: white;
-            background: linear-gradient(135deg, var(--accent), #0ea5e9);
-            box-shadow: 0 6px 18px rgba(56,189,248,0.4);
-            transition: all 0.3s ease;
+        .page-title p{
+            color:var(--muted);
+            font-size:18px;
         }
 
-        .btn:hover {
-            transform: scale(1.07);
-            box-shadow: 0 10px 30px rgba(56,189,248,0.6);
+        /* ===== TOP BUTTONS ===== */
+
+        .top-bar{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-bottom:30px;
         }
 
-        /* ===== Table ===== */
-        .table-wrapper {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 20px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            overflow-x: auto;
+        .top-btn{
+            text-decoration:none;
+            padding:12px 22px;
+            border-radius:12px;
+            font-weight:bold;
+            color:white;
+            transition:0.3s;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .new-btn{
+            background:#22c55e;
         }
 
-        th, td {
-            padding: 14px 10px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
+        .home-btn{
+            background:#38bdf8;
         }
 
-        th {
-            color: #f8fafc;
-            font-weight: 600;
-            background: rgba(255,255,255,0.05);
+        .top-btn:hover{
+            transform:translateY(-3px);
         }
 
-        tr:hover {
-            background: rgba(255,255,255,0.05);
+        /* ===== MESSAGE ===== */
+
+        .message{
+            text-align:center;
+            font-weight:bold;
+            margin-bottom:20px;
+            font-size:18px;
         }
 
-        a.link {
-            color: var(--success);
-            font-weight: 600;
-            text-decoration: none;
+        .success{
+            color:#22c55e;
         }
 
-        a.link:hover {
-            text-decoration: underline;
+        .error{
+            color:#ef4444;
         }
 
-        /* ===== Actions ===== */
-        .edit {
-            background: var(--warning);
-            padding: 6px 12px;
-            border-radius: 6px;
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 6px;
+        /* ===== TABLE WRAPPER ===== */
+
+        .table-wrapper{
+
+            width:100%;
+
+            overflow-x:auto;
+
+            background:var(--card-bg);
+
+            border:1px solid var(--border);
+
+            border-radius:22px;
+
+            backdrop-filter:blur(14px);
+
+            box-shadow:0 15px 40px rgba(0,0,0,0.4);
+
+            padding:20px;
         }
 
-        .delete {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
+        /* ===== TABLE ===== */
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:1200px;
         }
 
-        .edit:hover,
-        .delete:hover {
-            opacity: 0.85;
+        thead{
+            background:rgba(255,255,255,0.08);
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
+        th{
+            padding:18px 12px;
+            text-align:center;
+            color:white;
+            font-size:15px;
+        }
+
+        td{
+            padding:18px 12px;
+            text-align:center;
+            border-bottom:1px solid var(--border);
+            color:var(--muted);
+        }
+
+        tr:hover{
+            background:rgba(255,255,255,0.05);
+        }
+
+        /* ===== LINKS ===== */
+
+        .table-link{
+            color:#4ade80;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .table-link:hover{
+            text-decoration:underline;
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+
+        .action-buttons{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+
+        .delete-form{
+            margin:0;
+        }
+
+        .edit-btn,
+        .delete-btn,
+        .invoice-btn{
+
+            border:none;
+
+            padding:10px 16px;
+
+            border-radius:10px;
+
+            font-size:14px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+
+            text-decoration:none;
+
+            color:white;
+
+            transition:0.3s;
+        }
+
+        .edit-btn{
+            background:#facc15;
+            color:black;
+        }
+
+        .delete-btn{
+            background:#ef4444;
+        }
+
+        .invoice-btn{
+            background:#22c55e;
+        }
+
+        .edit-btn:hover,
+        .delete-btn:hover,
+        .invoice-btn:hover{
+
+            transform:translateY(-2px);
+
+            opacity:0.9;
+        }
+
+        /* ===== PAYMENT BADGE ===== */
+
+        .paid{
+            display:inline-block;
+            background:rgba(34,197,94,0.15);
+            color:#4ade80;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:13px;
+            font-weight:bold;
+        }
+
+        .pending{
+            display:inline-block;
+            background:rgba(239,68,68,0.15);
+            color:#f87171;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:13px;
+            font-weight:bold;
+        }
+
+        /* ===== RESPONSIVE ===== */
+
+        @media(max-width:768px){
+
+            body{
+                padding:15px;
             }
+
+            .page-title h1{
+                font-size:30px;
+            }
+
+            .top-bar{
+                flex-direction:column;
+            }
+
+            .top-btn{
+                width:100%;
+                text-align:center;
+            }
+
+            .action-buttons{
+                flex-direction:column;
+            }
+
+            .edit-btn,
+            .delete-btn,
+            .invoice-btn{
+                width:100%;
+            }
+
         }
+
     </style>
+
 </head>
 
 <body>
 
-<h2>📖 Booking Management</h2>
+<!-- ===== PAGE TITLE ===== -->
 
-<p th:if="${success}" th:text="${success}" class="message success"></p>
-<p th:if="${error}" th:text="${error}" class="message error"></p>
+<div class="page-title">
 
-<div class="top-bar">
-    <a th:href="@{/booking/new}" class="btn">➕ New Booking</a>
-    <a th:href="@{/}" class="btn">🏠 Home</a>
+    <h1>
+        📖 Booking Management
+    </h1>
+
 </div>
 
+<!-- ===== SUCCESS / ERROR ===== -->
+
+<p th:if="${success}"
+   th:text="${success}"
+   class="message success">
+</p>
+
+<p th:if="${error}"
+   th:text="${error}"
+   class="message error">
+</p>
+
+<!-- ===== TOP BUTTONS ===== -->
+
+<div class="top-bar">
+
+    <a th:href="@{/booking/new}"
+       class="top-btn new-btn">
+
+        ➕ New Booking
+
+    </a>
+
+    <a th:href="@{/}"
+       class="top-btn home-btn">
+
+        🏠 Home
+
+    </a>
+
+</div>
+
+<!-- ===== TABLE ===== -->
+
 <div class="table-wrapper">
+
     <table>
+
         <thead>
+
         <tr>
+
             <th>ID</th>
+
             <th>Customer</th>
+
             <th>Hotel</th>
+
             <th>Room</th>
+
             <th>Check-In</th>
+
             <th>Check-Out</th>
+
             <th>Payment Mode</th>
+
             <th>Total Amount</th>
+
+            <th>Status</th>
+
             <th>Actions</th>
+
         </tr>
+
         </thead>
 
         <tbody>
+
         <tr th:each="b : ${bookings}">
+
+            <!-- ID -->
+
             <td th:text="${b.id}"></td>
 
+            <!-- CUSTOMER -->
+
             <td>
-                <a class="link"
+
+                <a class="table-link"
+
                    th:href="@{/customer/find/{id}(id=${b.customer.id})}"
+
                    th:text="${b.customer.name}">
+
                 </a>
+
             </td>
 
+            <!-- HOTEL -->
+
             <td>
-                <a class="link"
+
+                <a class="table-link"
+
                    th:href="@{/hotel/find/{id}(id=${b.hotel.id})}"
+
                    th:text="${b.hotel.name}">
+
                 </a>
+
             </td>
 
+            <!-- ROOM -->
+
             <td>
-                <a class="link"
+
+                <a class="table-link"
+
                    th:href="@{/room/find/{id}(id=${b.room.id})}"
-                   th:text="${b.room.id}">
+
+                   th:text="${b.room.roomNumber}">
+
                 </a>
+
             </td>
+
+            <!-- CHECK IN -->
 
             <td th:text="${b.checkInDate}"></td>
+
+            <!-- CHECK OUT -->
+
             <td th:text="${b.checkOutDate}"></td>
 
-            <td>
-                <a th:if="${b.payment != null}"
-                   class="link"
-                   th:href="@{/payment/find/{id}(id=${b.payment.id})}"
-                   th:text="${b.payment.paymentMode}">
-                </a>
-                <span th:if="${b.payment == null}">-</span>
-            </td>
+            <!-- PAYMENT MODE -->
 
             <td>
-            <span th:if="${b.payment != null}"
-                  th:text="${b.payment.amount}"></span>
-                <span th:if="${b.payment == null}">-</span>
+
+                <span th:if="${b.payment != null}"
+
+                      th:text="${b.payment.paymentMode}">
+
+                </span>
+
+                <span th:if="${b.payment == null}">
+                    -
+                </span>
+
             </td>
+
+            <!-- AMOUNT -->
 
             <td>
-                <a th:href="@{/booking/edit/{id}(id=${b.id})}" class="edit">✏ Edit</a>
 
-                <form th:action="@{/booking/delete/{id}(id=${b.id})}"
-                      method="post"
-                      style="display:inline"
-                      onsubmit="return confirm('Are you sure?')">
+                ₹
 
-                    <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" class="delete">🗑 Delete</button>
-                </form>
+                <span th:if="${b.payment != null}"
+
+                      th:text="${b.payment.amount}">
+
+                </span>
+
+                <span th:if="${b.payment == null}">
+                    0
+                </span>
+
             </td>
+
+            <!-- STATUS -->
+
+            <td>
+
+                <span th:if="${b.payment != null}"
+                      class="paid">
+
+                    PAID
+
+                </span>
+
+                <span th:if="${b.payment == null}"
+                      class="pending">
+
+                    PENDING
+
+                </span>
+
+            </td>
+
+            <!-- ACTIONS -->
+
+            <td>
+
+                <div class="action-buttons">
+
+                    <!-- EDIT -->
+
+                    <a th:href="@{/booking/edit/{id}(id=${b.id})}"
+
+                       class="edit-btn">
+
+                        ✏ Edit
+
+                    </a>
+
+                    <!-- DELETE -->
+
+                    <form th:action="@{/booking/delete/{id}(id=${b.id})}"
+
+                          method="post"
+
+                          class="delete-form">
+
+                        <input type="hidden"
+                               name="_method"
+                               value="delete"/>
+
+                        <button type="submit"
+                                class="delete-btn">
+
+                            🗑 Delete
+
+                        </button>
+
+                    </form>
+
+                    <!-- INVOICE -->
+
+                    <button class="invoice-btn"
+
+                            th:data-id="${b.id}"
+                            th:data-customer="${b.customer.name}"
+                            th:data-hotel="${b.hotel.name}"
+                            th:data-room="${b.room.roomNumber}"
+                            th:data-checkin="${b.checkInDate}"
+                            th:data-checkout="${b.checkOutDate}"
+                            th:data-payment="${b.payment.paymentMode}"
+                            th:data-amount="${b.payment.amount}"
+
+                            onclick="downloadInvoice(this)">
+
+                        📄 Invoice
+
+                    </button>
+
+                </div>
+
+            </td>
+
         </tr>
+
         </tbody>
+
     </table>
+
 </div>
 
+<!-- ===== JAVASCRIPT ===== -->
+
+<script>
+
+    async function downloadInvoice(button){
+
+        const bookingId =
+            button.getAttribute("data-id");
+
+        const customerName =
+            button.getAttribute("data-customer");
+
+        const hotelName =
+            button.getAttribute("data-hotel");
+
+        const roomNumber =
+            button.getAttribute("data-room");
+
+        const checkIn =
+            button.getAttribute("data-checkin");
+
+        const checkOut =
+            button.getAttribute("data-checkout");
+
+        const paymentMode =
+            button.getAttribute("data-payment");
+
+        const amount =
+            button.getAttribute("data-amount");
+
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF();
+
+        // TITLE
+
+        doc.setFontSize(24);
+
+        doc.text("HOTEL INVOICE", 60, 20);
+
+        doc.line(20, 28, 190, 28);
+
+        // DETAILS
+
+        doc.setFontSize(14);
+
+        doc.text("Booking ID : " + bookingId, 20, 45);
+
+        doc.text("Customer : " + customerName, 20, 58);
+
+        doc.text("Hotel : " + hotelName, 20, 71);
+
+        doc.text("Room Number : " + roomNumber, 20, 84);
+
+        doc.text("Check In : " + checkIn, 20, 97);
+
+        doc.text("Check Out : " + checkOut, 20, 110);
+
+        doc.text("Payment Mode : " + paymentMode, 20, 123);
+
+        doc.text("Amount : Rs. " + amount, 20, 136);
+
+        doc.text("Thank You For Booking ❤️", 20, 165);
+
+        // DOWNLOAD
+
+        doc.save("invoice_" + bookingId + ".pdf");
+
+    }
+
+</script>
+
 </body>
+
 </html>

@@ -15,6 +15,7 @@ public class BookingModel extends BaseModel {
     private RoomModel room;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
@@ -42,7 +43,7 @@ public class BookingModel extends BaseModel {
 
 
     @Enumerated(EnumType.STRING)
-   private BookingStatus status;
+    private BookingStatus status;
 
 
 

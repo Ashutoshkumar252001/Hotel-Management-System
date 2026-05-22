@@ -115,7 +115,7 @@
 
     <h2 th:text="${hotel.id == null ? '🏨 Add Hotel' : '✏ Edit Hotel'}"></h2>
 
-    <form th:action="@{/hotel/save}"
+    <form th:action="@{/admin/hotel/save}"
           th:object="${hotel}"
           method="post">
 
@@ -141,7 +141,7 @@
                 th:text="${hotel.id == null ? 'Save Hotel' : 'Update Hotel'}">
         </button>
 
-        <a th:href="@{/hotel/list}">Cancel</a>
+        <a th:href="@{/admin/hotel/list}">Cancel</a>
 
     </form>
 

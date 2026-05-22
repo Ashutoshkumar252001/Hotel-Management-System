@@ -140,7 +140,7 @@
 <p th:if="${error}" th:text="${error}" class="message error"></p>
 
 <div class="top-bar">
-    <a th:href="@{/hotel/new}" class="add-btn">➕ New Hotel</a>
+    <a th:href="@{/admin/hotel/new}" class="add-btn">➕ New Hotel</a>
     <a th:href="@{/}" class="home-btn">🏠 Home</a>
 </div>
 
@@ -163,9 +163,9 @@
         <td th:text="${h.rating}"></td>
 
         <td>
-            <a th:href="@{/hotel/edit/{id}(id=${h.id})}" class="edit">✏ Edit</a>
+            <a th:href="@{/admin/hotel/edit/{id}(id=${h.id})}" class="edit">✏ Edit</a>
 
-            <form th:action="@{/hotel/delete/{id}(id=${h.id})}"
+            <form th:action="@{/admin/hotel/delete/{id}(id=${h.id})}"
                   method="post"
                   onsubmit="return confirm('Are you sure?')"
                   style="display:inline;">

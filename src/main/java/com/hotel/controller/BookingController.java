@@ -1,12 +1,11 @@
 package com.hotel.controller;
 
 import com.hotel.exception.BookingNotFoundException;
-import com.hotel.models.BookingModel;
-import com.hotel.models.PaymentModel;
-import com.hotel.models.RoomModel;
+import com.hotel.models.*;
 import com.hotel.services.*;
 import com.hotel.validator.BookingDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +31,9 @@ public class BookingController
 
     @Autowired
     private BookingDataValidator bookingDataValidator;
-    @Autowired
-    private PaymentServices paymentServices;
+
+//    @Autowired
+//    private PaymentServices paymentServices;
 
 
     @GetMapping("/new")
@@ -49,13 +49,10 @@ public class BookingController
         return "booking-form";
     }
 
+
+
     @PostMapping("/save")
     public String saveBooking(@ModelAttribute BookingModel booking, Model model) {
-//        model.addAttribute("customers",customerServices.findAllCustomer());
-//        model.addAttribute("hotels",hotelServices.findAllHotels());
-//        model.addAttribute("rooms",roomServices.findAllRooms());
-
-
         if(booking.getId()==null) {
             List<String> errors = bookingDataValidator.validate(booking);
             if (!errors.isEmpty()) {
@@ -125,8 +122,7 @@ public class BookingController
 
 
     @DeleteMapping("/delete/{id}")
-    public String deleteBooking(@PathVariable Long id,
-                                Model model)
+    public String deleteBooking(@PathVariable Long id, Model model)
     {
         try
         {
@@ -151,6 +147,12 @@ public class BookingController
         }
         return "booking";
     }
+
+
+
+
+
+
 
     @GetMapping("/rooms/by-hotel/{hotelId}")
     @ResponseBody

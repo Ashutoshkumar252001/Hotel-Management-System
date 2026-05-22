@@ -1,6 +1,7 @@
 package com.hotel.services.impl;
 
 
+import com.hotel.enums.BookingStatus;
 import com.hotel.enums.PaymentMode;
 import com.hotel.enums.PaymentStatus;
 import com.hotel.exception.BookingNotFoundException;
@@ -39,9 +40,10 @@ public class BookingServicesImpl implements BookingServices {
         Optional<BookingModel> opt = bookingRepo.findById(id);
         if (opt.isPresent()) {
             return opt.get();
-        } else {
-            throw new BookingNotFoundException(
-                    "Booking not found for this ID: " + id);
+        }
+        else
+        {
+            throw new BookingNotFoundException("Booking not found for this ID: " + id);
         }
     }
 
@@ -49,15 +51,28 @@ public class BookingServicesImpl implements BookingServices {
     public List<BookingModel> findAllBookings() {
         return bookingRepo.findAll();
     }
+    @Override
+    public List<BookingModel> findBookingsByCustomer(String username) {
+
+        return bookingRepo.findByCustomerUserUserName(username);
+
+    }
+
+
 
     @Override
     public void saveBooking(BookingModel booking) {
+//        booking.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
+//        booking.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
+//        booking.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+
 
 
         if (booking.getId() == null) {
             booking.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
             booking.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
             booking.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+            booking.setStatus(BookingStatus.CONFIRMED);
 
 
             PaymentModel payment = new PaymentModel();
@@ -66,6 +81,7 @@ public class BookingServicesImpl implements BookingServices {
             payment.setPaymentStatus(PaymentStatus.PAID);
             Long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
             payment.setAmount(days*booking.getRoom().getPricePerNight());
+
             payment.setBooking(booking);
             booking.setPayment(payment);
 

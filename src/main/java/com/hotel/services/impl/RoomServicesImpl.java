@@ -56,6 +56,7 @@ public class RoomServicesImpl implements RoomServices {
             r2.setStatus(room.getStatus());
             r2.setType(room.getType());
             r2.setPricePerNight(room.getPricePerNight());
+            r2.setHotelModel(room.getHotelModel());
             roomRepo.save(r2);
         }
     }

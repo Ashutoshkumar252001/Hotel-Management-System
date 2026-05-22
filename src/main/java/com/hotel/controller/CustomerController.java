@@ -47,7 +47,7 @@ public class CustomerController
                 try
                 {
                     customerServices.saveCustomer(c);
-                    model.addAttribute("success", "Customer created successfully");
+                    model.addAttribute("success", "customer created successfully");
                 } catch (Exception e)
                 {
                     model.addAttribute("error", "Error during Customer data creation");
