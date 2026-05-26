@@ -169,8 +169,8 @@
             <td class="price">₹ <span th:text="${r.pricePerNight}"></span></td>
 
             <td>
-                <a th:href="@{/admin/hotel/find/{id}(id=${r.hotelModel.id})}"
-                   th:text="${r.hotelModel.name}">
+                <a th:href="@{/admin/hotel/find/{id}(id=${r.hotel.id})}"
+                   th:text="${r.hotel.name}">
                 </a>
             </td>
 

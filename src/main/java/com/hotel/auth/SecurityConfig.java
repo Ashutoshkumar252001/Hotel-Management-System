@@ -17,7 +17,7 @@ public class SecurityConfig { // this is the core of integration
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register","/user-create","/css/**","/js/**").permitAll()
+                        .requestMatchers("/login", "/register","/register-user","/css/**","/js/**").permitAll()
 
                         // Only write operations require admin roles (new, save, edit, delete)
                         .requestMatchers("/admin/hotel/**")
@@ -26,7 +26,8 @@ public class SecurityConfig { // this is the core of integration
                         .requestMatchers("/admin/room/**")
                         .hasAnyRole(Role.ADMIN.getRoleName())
 
-                        .requestMatchers("/booking/list")
+                        .requestMatchers("/booking/list",
+                                                   "/booking/delete/**")
                         .hasRole("ADMIN")
 
                         .requestMatchers("/customer/list")
@@ -35,7 +36,7 @@ public class SecurityConfig { // this is the core of integration
 
                         .requestMatchers("/hotel/list/",
                                                    "/hotel/find/**",
-                                                   "/room/List/",
+                                                   "/room/list/",
                                                    "/room/find**"
 
                         )
@@ -45,9 +46,22 @@ public class SecurityConfig { // this is the core of integration
 
                         .requestMatchers(
                                 "/customer/new**",
+
                                 "/customer/save**"
                                 )
                         .hasRole("USER")
+
+                        .requestMatchers(
+                                "/admin/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                "/booking/my-bookings/**"
+                        ).hasRole("USER")
+
+                        .requestMatchers(
+                                "/booking/new/**"
+                        ).hasRole("USER")
 
 
                         .requestMatchers(
@@ -55,6 +69,7 @@ public class SecurityConfig { // this is the core of integration
                                 "/booking/save",
                                 "/booking/edit/**",
                                 "/booking/find/**",
+                                "/booking/my-bookings**",
                                 "/booking/delete/**"
 
                         )

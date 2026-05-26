@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LuxuryStay | Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        :root{
+            --bg:#020617;
+            --sidebar:#0f172a;
+            --card:#111827;
+            --border:rgba(255,255,255,.08);
+            --text:#f8fafc;
+            --muted:#94a3b8;
+            --primary:#06b6d4;
+            --primary2:#3b82f6;
+            --success:#22c55e;
+            --warning:#f59e0b;
+            --danger:#ef4444;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Outfit',sans-serif;
+        }
+
+        body{
+            background:
+                    radial-gradient(circle at top left,
+                    rgba(6,182,212,.16),
+                    transparent 30%),
+
+                    radial-gradient(circle at bottom right,
+                    rgba(59,130,246,.14),
+                    transparent 30%),
+
+                    linear-gradient(135deg,#020617,#0f172a);
+
+            color:white;
+            min-height:100vh;
+            display:flex;
+        }
+
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+            width:280px;
+            min-height:100vh;
+            background:rgba(15,23,42,.92);
+            border-right:1px solid rgba(255,255,255,.06);
+            padding:30px 22px;
+            position:fixed;
+            left:0;
+            top:0;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:45px;
+        }
+
+        .logo-icon{
+            width:58px;
+            height:58px;
+            border-radius:20px;
+            background:
+                    linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary2));
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:24px;
+            box-shadow:0 15px 35px rgba(6,182,212,.25);
+        }
+
+        .logo h2{
+            font-size:30px;
+            font-weight:800;
+        }
+
+        .logo span{
+            color:var(--primary);
+        }
+
+        .menu-title{
+            color:#64748b;
+            font-size:13px;
+            margin-bottom:16px;
+            padding-left:10px;
+            letter-spacing:1px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+
+        .menu a{
+            height:56px;
+            padding:0 18px;
+            border-radius:18px;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            font-size:15px;
+            color:#e2e8f0;
+            transition:.3s;
+            border:1px solid transparent;
+        }
+
+        .menu a:hover{
+            background:rgba(6,182,212,.12);
+            border-color:rgba(6,182,212,.18);
+            transform:translateX(4px);
+        }
+
+        .menu i{
+            width:40px;
+            height:40px;
+            border-radius:14px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:rgba(255,255,255,.05);
+        }
+
+        .logout-box{
+            position:absolute;
+            bottom:30px;
+            left:22px;
+            right:22px;
+        }
+
+        .logout-btn{
+            width:100%;
+            height:56px;
+            border:none;
+            border-radius:18px;
+            background:rgba(239,68,68,.15);
+            color:#fecaca;
+            cursor:pointer;
+            font-size:15px;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .logout-btn:hover{
+            background:rgba(239,68,68,.22);
+        }
+
+        /* MAIN */
+
+        .main{
+            margin-left:280px;
+            width:calc(100% - 280px);
+            padding:30px;
+        }
+
+        /* TOPBAR */
+
+        .topbar{
+            width:100%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .welcome h1{
+            font-size:38px;
+            font-weight:800;
+        }
+
+        .welcome h1 span{
+            color:var(--primary);
+        }
+
+        .welcome p{
+            margin-top:8px;
+            color:var(--muted);
+        }
+
+        .admin-profile{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            padding:14px 20px;
+            border-radius:22px;
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.08);
+        }
+
+        .admin-profile img{
+            width:58px;
+            height:58px;
+            border-radius:50%;
+            object-fit:cover;
+            border:3px solid rgba(6,182,212,.35);
+        }
+
+        .admin-profile h3{
+            font-size:16px;
+        }
+
+        .admin-profile p{
+            color:var(--muted);
+            font-size:13px;
+            margin-top:4px;
+        }
+
+        /* STATS */
+
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:22px;
+        }
+
+        .stat-card{
+            position:relative;
+            overflow:hidden;
+            padding:28px;
+            border-radius:30px;
+            background:
+                    linear-gradient(135deg,
+                    rgba(255,255,255,.06),
+                    rgba(255,255,255,.02));
+
+            border:1px solid rgba(255,255,255,.08);
+            transition:.3s;
+        }
+
+        .stat-card:hover{
+            transform:translateY(-6px);
+        }
+
+        .stat-card::before{
+            content:"";
+            position:absolute;
+            width:180px;
+            height:180px;
+            border-radius:50%;
+            background:rgba(6,182,212,.12);
+            top:-90px;
+            right:-70px;
+        }
+
+        .stat-top{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:24px;
+        }
+
+        .stat-icon{
+            width:68px;
+            height:68px;
+            border-radius:22px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:24px;
+            background:
+                    linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary2));
+
+            box-shadow:0 15px 35px rgba(6,182,212,.25);
+        }
+
+        .growth{
+            font-size:13px;
+            padding:8px 14px;
+            border-radius:999px;
+            background:rgba(34,197,94,.16);
+            color:#bbf7d0;
+            font-weight:600;
+        }
+
+        .stat-card h3{
+            color:#cbd5e1;
+            font-size:16px;
+            margin-bottom:12px;
+        }
+
+        .stat-card h1{
+            font-size:42px;
+            font-weight:800;
+        }
+
+        /* LOWER SECTION */
+
+        .lower{
+            margin-top:30px;
+            display:grid;
+            grid-template-columns:1.4fr .8fr;
+            gap:24px;
+        }
+
+        .panel{
+            border-radius:30px;
+            padding:28px;
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.08);
+        }
+
+        .panel-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:26px;
+        }
+
+        .panel-header h2{
+            font-size:26px;
+            font-weight:700;
+        }
+
+        /* TABLE */
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            text-align:left;
+            padding:14px;
+            color:#94a3b8;
+            font-size:13px;
+            border-bottom:1px solid rgba(255,255,255,.06);
+        }
+
+        td{
+            padding:16px 14px;
+            border-bottom:1px solid rgba(255,255,255,.05);
+            font-size:14px;
+        }
+
+        tr:hover{
+            background:rgba(255,255,255,.03);
+        }
+
+        .status{
+            padding:8px 14px;
+            border-radius:999px;
+            font-size:12px;
+            font-weight:600;
+        }
+
+        .active{
+            background:rgba(34,197,94,.16);
+            color:#bbf7d0;
+        }
+
+        .pending{
+            background:rgba(245,158,11,.16);
+            color:#fde68a;
+        }
+
+        /* ACTIVITY */
+
+        .activity{
+            display:flex;
+            flex-direction:column;
+            gap:18px;
+        }
+
+        .activity-item{
+            display:flex;
+            gap:16px;
+            align-items:flex-start;
+            padding:18px;
+            border-radius:20px;
+            background:rgba(255,255,255,.03);
+            border:1px solid rgba(255,255,255,.05);
+        }
+
+        .activity-icon{
+            min-width:50px;
+            height:50px;
+            border-radius:16px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:
+                    linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary2));
+        }
+
+        .activity-item h4{
+            font-size:15px;
+            margin-bottom:6px;
+        }
+
+        .activity-item p{
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.7;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:1150px){
+
+            .lower{
+                grid-template-columns:1fr;
+            }
+        }
+
+        @media(max-width:950px){
+
+            .sidebar{
+                display:none;
+            }
+
+            .main{
+                width:100%;
+                margin-left:0;
+            }
+        }
+
+        @media(max-width:700px){
+
+            .main{
+                padding:20px;
+            }
+
+            .topbar{
+                flex-direction:column;
+                align-items:flex-start;
+                gap:20px;
+            }
+
+            .welcome h1{
+                font-size:30px;
+            }
+
+            .admin-profile{
+                width:100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-hotel"></i>
+
+        </div>
+
+        <h2>
+
+            Luxury<span>Stay</span>
+
+        </h2>
+
+    </div>
+
+    <div class="menu-title">
+
+        MAIN MENU
+
+    </div>
+
+    <div class="menu">
+
+        <a th:href="@{/admin/hotel/list}">
+
+            <i class="fa-solid fa-hotel"></i>
+
+            Hotels Management
+
+        </a>
+
+        <a th:href="@{/admin/room/list}">
+
+            <i class="fa-solid fa-bed"></i>
+
+            Rooms Management
+
+        </a>
+
+        <a th:href="@{/customer/list}">
+
+            <i class="fa-solid fa-users"></i>
+
+            Customers
+
+        </a>
+
+        <a th:href="@{/booking/list}">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            Bookings
+
+        </a>
+
+        <a th:href="@{/payment/}">
+
+            <i class="fa-solid fa-wallet"></i>
+
+            Payments
+
+        </a>
+
+    </div>
+
+    <div class="logout-box">
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="welcome">
+
+            <h1>
+
+                Welcome Back,
+                <span th:text="${customer.name}">
+                    Admin
+                </span>
+
+            </h1>
+
+            <p>
+
+                Monitor hotel operations, bookings,
+                revenue, and customer activities in real time.
+
+            </p>
+
+        </div>
+
+        <div class="admin-profile">
+
+            <img src="https://i.pravatar.cc/300?img=15">
+
+            <div>
+
+                <h3 th:text="${customer.name}">
+                    Admin
+                </h3>
+
+                <p>
+
+                    Hotel Administrator
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <div class="growth">
+
+                    +12%
+
+                </div>
+
+            </div>
+
+            <h3>Total Customers</h3>
+
+            <h1 th:text="${totalCustomers}">
+                0
+            </h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-hotel"></i>
+
+                </div>
+
+                <div class="growth">
+
+                    +8%
+
+                </div>
+
+            </div>
+
+            <h3>Total Hotels</h3>
+
+            <h1 th:text="${totalHotels}">
+                0
+            </h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-bed"></i>
+
+                </div>
+
+                <div class="growth">
+
+                    +15%
+
+                </div>
+
+            </div>
+
+            <h3>Total Rooms</h3>
+
+            <h1 th:text="${totalRooms}">
+                0
+            </h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                </div>
+
+                <div class="growth">
+
+                    +20%
+
+                </div>
+
+            </div>
+
+            <h3>Total Bookings</h3>
+
+            <h1 th:text="${totalBookings}">
+                0
+            </h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                </div>
+
+                <div class="growth">
+
+                    +25%
+
+                </div>
+
+            </div>
+
+            <h3>Total Revenue</h3>
+
+            <h1>
+
+                ₹<span th:text="${totalRevenue}"></span>
+
+            </h1>
+
+        </div>
+
+    </div>
+
+    <!-- LOWER -->
+
+    <div class="lower">
+
+        <!-- BOOKINGS TABLE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+
+                    Recent Bookings
+
+                </h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>Guest</th>
+
+                    <th>Hotel</th>
+
+                    <th>Room</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+
+                    <td>Rahul Sharma</td>
+
+                    <td>Luxury Palace</td>
+
+                    <td>Suite 205</td>
+
+                    <td>
+                        <span class="status active">
+
+                            Confirmed
+
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Anjali Verma</td>
+
+                    <td>Royal Stay</td>
+
+                    <td>Deluxe 112</td>
+
+                    <td>
+                        <span class="status pending">
+
+                            Pending
+
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Rohit Kumar</td>
+
+                    <td>Ocean View</td>
+
+                    <td>Premium 309</td>
+
+                    <td>
+                        <span class="status active">
+
+                            Confirmed
+
+                        </span>
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- ACTIVITY -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+
+                    Recent Activities
+
+                </h2>
+
+            </div>
+
+            <div class="activity">
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+
+                            New Customer Registered
+
+                        </h4>
+
+                        <p>
+
+                            A new customer account was created today.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-money-bill-wave"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+
+                            Payment Received
+
+                        </h4>
+
+                        <p>
+
+                            Payment successfully completed for Room 205.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-bed"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+
+                            Room Added
+
+                        </h4>
+
+                        <p>
+
+                            A new premium suite room was added to inventory.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

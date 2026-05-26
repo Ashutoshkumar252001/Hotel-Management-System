@@ -119,7 +119,7 @@
         <input type="hidden" th:field="*{id}"/>
 
         <label>Hotel</label>
-        <select th:field="*{hotelModel.id}" required>
+        <select th:field="*{hotel.id}" required>
             <option value="">-- Select Hotel --</option>
             <option th:each="t : ${hotels}"
                     th:value="${t.id}"
