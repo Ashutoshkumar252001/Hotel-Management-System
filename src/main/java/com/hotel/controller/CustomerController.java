@@ -3,7 +3,7 @@ package com.hotel.controller;
 import com.hotel.exception.CustomerNotFoundException;
 import com.hotel.models.CustomerModel;
 import com.hotel.services.CustomerServices;
-import com.hotel.validator.CustomerDataValidator;
+import com.hotel.validator.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class CustomerController
     private CustomerServices customerServices;
 
     @Autowired
-    private CustomerDataValidator customerDataValidator;
+    private CustomerValidator customerDataValidator;
 
 
     @GetMapping("/new")
@@ -63,7 +63,7 @@ public class CustomerController
     {
         try
         {
-            CustomerModel c1 = customerServices.getCustomerById(id);
+            CustomerModel c1 = customerServices.findCustomerById(id);
             model.addAttribute("customer",c1);
             model.addAttribute("success","customer found");
             return "customer-form";
@@ -111,7 +111,7 @@ public class CustomerController
     @GetMapping("/find/{id}")
     public String getById(@PathVariable Long id, Model model) {
         try {
-            CustomerModel customer = customerServices.getCustomerById(id);
+            CustomerModel customer = customerServices.findCustomerById(id);
             model.addAttribute("success","payment found ");
             model.addAttribute("customers",List.of(customer));
 

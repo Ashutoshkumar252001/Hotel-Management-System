@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "hotels",uniqueConstraints = {@UniqueConstraint(columnNames = {"hotel_name","address"})})
 public class HotelModel extends BaseModel {
 
-   @OneToMany
+   @OneToMany(mappedBy = "hotel")
    private List<RoomModel> rooms;
 
     @Column(name = "hotel_name",nullable = false)

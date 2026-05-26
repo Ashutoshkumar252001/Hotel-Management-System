@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Form</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#0f172a;
+            color:white;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:30px;
+        }
+
+        .booking-container{
+            width:100%;
+            max-width:600px;
+            background:#1e293b;
+            border-radius:20px;
+            padding:35px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .title{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .title h1{
+            color:#38bdf8;
+            margin-bottom:10px;
+        }
+
+        .title p{
+            color:#cbd5e1;
+            font-size:14px;
+        }
+
+        .input-group{
+            margin-bottom:20px;
+        }
+
+        .input-group label{
+            display:block;
+            margin-bottom:8px;
+            color:#cbd5e1;
+            font-size:14px;
+        }
+
+        .input-box{
+            position:relative;
+        }
+
+        .input-box i{
+            position:absolute;
+            top:50%;
+            left:15px;
+            transform:translateY(-50%);
+            color:#94a3b8;
+        }
+
+        .input-box input,
+        .input-box select{
+            width:100%;
+            height:55px;
+            border:none;
+            outline:none;
+            border-radius:12px;
+            background:#0f172a;
+            color:white;
+            padding-left:45px;
+            font-size:15px;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus{
+            border:2px solid #38bdf8;
+        }
+
+        .submit-btn{
+            width:100%;
+            height:55px;
+            border:none;
+            border-radius:12px;
+            background:#38bdf8;
+            color:white;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:15px;
+            transition:0.3s;
+        }
+
+        .submit-btn:hover{
+            background:#0ea5e9;
+        }
+
+        .back-btn{
+            display:inline-block;
+            margin-bottom:20px;
+            color:#38bdf8;
+            text-decoration:none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="booking-container">
+
+    <a th:href="@{/}"
+       class="back-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back
+
+    </a>
+
+    <div class="title">
+
+        <h1>Hotel Booking</h1>
+
+        <p>Complete your reservation details</p>
+
+    </div>
+
+    <form th:action="@{/booking/save}"
+          th:object="${booking}"
+          method="post">
+
+        <!-- BOOKING ID -->
+
+        <input type="hidden"
+               th:field="*{id}"/>
+
+        <!-- CUSTOMER ID -->
+
+        <input type="hidden"
+               th:field="*{customer.id}"/>
+
+        <!-- HOTEL ID -->
+
+        <input type="hidden"
+               th:field="*{hotel.id}"/>
+
+        <!-- CUSTOMER NAME -->
+
+        <div class="input-group">
+
+            <label>Customer Name</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-user"></i>
+
+                <input type="text"
+                       th:value="${booking.customer.name}"
+                       readonly>
+
+            </div>
+
+        </div>
+
+        <!-- HOTEL NAME -->
+
+        <div class="input-group">
+
+            <label>Selected Hotel</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-hotel"></i>
+
+                <input type="text"
+                       id="hotelName"
+                       th:value="${booking.hotel.name}"
+                       readonly>
+
+            </div>
+
+        </div>
+
+        <!-- ROOM -->
+
+        <div class="input-group">
+
+            <label>Select Room</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-door-open"></i>
+
+                <select id="roomSelect"
+                        th:field="*{room.id}"
+                        required>
+
+                    <option value="">
+                        Choose Room
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- CHECK IN -->
+
+        <div class="input-group">
+
+            <label>Check-In Date</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <input type="date"
+                       th:field="*{checkInDate}"
+                       required>
+
+            </div>
+
+        </div>
+
+        <!-- CHECK OUT -->
+
+        <div class="input-group">
+
+            <label>Check-Out Date</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+                <input type="date"
+                       th:field="*{checkOutDate}"
+                       required>
+
+            </div>
+
+        </div>
+
+        <!-- PAYMENT -->
+
+        <div class="input-group">
+
+            <label>Payment Mode</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <select th:field="*{payment.paymentMode}"
+                        required>
+
+                    <option value="">
+                        Select Payment Mode
+                    </option>
+
+                    <option th:each="mode :
+                    ${T(com.hotel.enums.PaymentMode).values()}"
+
+                            th:value="${mode}"
+                            th:text="${mode}">
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="submit-btn">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Confirm Booking
+
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+    window.onload = function () {
+
+        const hotelId =
+            document.querySelector(
+                'input[name="hotel.id"]'
+            ).value;
+
+        fetch('/booking/rooms/by-hotel/' + hotelId)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                const roomSelect =
+                    document.getElementById("roomSelect");
+
+                roomSelect.innerHTML =
+                    '<option value="">Choose Room</option>';
+
+                data.forEach(room => {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = room.id;
+
+                    option.text =
+                        room.roomNumber
+                        + " | "
+                        + room.roomType
+                        + " | ₹"
+                        + room.price;
+
+                    roomSelect.appendChild(option);
+
+                });
+
+            });
+
+    };
+
+</script>
+
+</body>
+
+</html>

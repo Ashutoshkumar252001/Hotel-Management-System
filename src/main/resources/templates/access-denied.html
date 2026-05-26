@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Access Denied | Cricket Info App</title>
+    <title>Access Denied</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            margin: 0; padding: 0; color: white;
+
+        body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:#0f172a;
+            font-family:Arial,sans-serif;
+            color:white;
         }
-        .container {
-            width: 500px; margin: 150px auto; background: white;
-            padding: 40px; border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            color: #2c3e50; text-align: center;
+
+        .box{
+            text-align:center;
+            background:rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+            width:450px;
         }
-        h2 { color: #e74c3c; }
-        a { color: #2a5298; text-decoration: none; font-weight: bold; }
+
+        h1{
+            color:#ef4444;
+            margin-bottom:20px;
+        }
+
+        a{
+            text-decoration:none;
+            color:white;
+            background:#38bdf8;
+            padding:12px 20px;
+            border-radius:10px;
+        }
+
     </style>
+
 </head>
+
 <body>
-<div class="container">
-    <h2>403 - Access Denied</h2>
-    <p>You do not have permission to access this page.</p>
-    <p><a th:href="@{/}">Go to Home</a></p>
+
+<div class="box">
+
+    <h1>403 Access Denied</h1>
+
+    <p>
+        You are not authorized to access this page.
+    </p>
+
+    <br>
+
+    <a th:href="@{/}">
+        Back To Home
+    </a>
+
 </div>
+
 </body>
 </html>

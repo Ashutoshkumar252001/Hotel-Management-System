@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>User Home</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial,sans-serif;
+            background:#0f172a;
+            color:white;
+        }
+
+        .container{
+            padding:30px;
+        }
+
+        .hotel-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        .hotel-card{
+            background:rgba(255,255,255,0.08);
+            padding:20px;
+            border-radius:20px;
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:10px;
+            padding:10px 15px;
+            background:#38bdf8;
+            border-radius:10px;
+            text-decoration:none;
+            color:white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Welcome
+        <span th:text="${customer.name}"></span>
+    </h1>
+
+    <h2>Available Hotels</h2>
+
+    <div class="hotel-grid">
+
+        <div class="hotel-card"
+             th:each="hotel : ${hotelList}">
+
+            <h3 th:text="${hotel.name}"></h3>
+
+            <p th:text="${hotel.address}"></p>
+
+            <p>
+                Rating :
+                <span th:text="${hotel.rating}"></span>
+            </p>
+
+            <a class="btn"
+               th:href="@{/booking/new}">
+                Book Now
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

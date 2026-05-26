@@ -40,8 +40,8 @@ public class RoomServicesImpl implements RoomServices {
     @Override
     public void saveRoom(RoomModel room) {
 
-        HotelModel  hotel =  hotelServices.getHotelById(room.getHotelModel().getId());
-        room.setHotelModel(hotel);
+        HotelModel  hotel =  hotelServices.getHotelById(room.getHotel().getId());
+        room.setHotel(hotel);
 
         if(room.getId()==null){
             roomRepo.save(room);
@@ -56,7 +56,7 @@ public class RoomServicesImpl implements RoomServices {
             r2.setStatus(room.getStatus());
             r2.setType(room.getType());
             r2.setPricePerNight(room.getPricePerNight());
-            r2.setHotelModel(room.getHotelModel());
+            r2.setHotel(room.getHotel());
             roomRepo.save(r2);
         }
     }
@@ -75,6 +75,6 @@ public class RoomServicesImpl implements RoomServices {
 
     @Override
     public List<RoomModel> findByHotelId(Long hotelId) {
-        return roomRepo.findByHotelModel_Id(hotelId);
+        return roomRepo.findByHotel_Id(hotelId);
     }
 }
