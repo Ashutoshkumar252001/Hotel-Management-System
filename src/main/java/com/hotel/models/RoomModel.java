@@ -1,5 +1,6 @@
 package com.hotel.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hotel.enums.RoomStatus;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -10,7 +11,9 @@ import org.antlr.v4.runtime.misc.NotNull;
 public class RoomModel extends BaseModel {
 
    @ManyToOne
-   private HotelModel hotelModel;
+   @JsonIgnoreProperties("rooms")
+   @JoinColumn(name = "hotel_id")
+   private HotelModel hotel;
    private Integer roomNumber;
    private String type;
    private Double pricePerNight;
@@ -34,15 +37,14 @@ public class RoomModel extends BaseModel {
         this.pricePerNight = pricePerNight;
     }
 
-    public HotelModel getHotelModel() {
-        return hotelModel;
+
+    public HotelModel getHotel() {
+        return hotel;
     }
 
-    public void setHotelModel(HotelModel hotelModel) {
-        this.hotelModel = hotelModel;
+    public void setHotel(HotelModel hotel) {
+        this.hotel = hotel;
     }
-
-
 
     public String getType() {
         return type;

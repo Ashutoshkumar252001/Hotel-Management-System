@@ -10,6 +10,7 @@ import com.hotel.services.HotelServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +60,20 @@ public class HotelServicesImpl implements HotelServices {
             h.setRating(hotel.getRating());
             hotelRepo.save(h);
         }
-
-
-
-
     }
 
+    @Override
+    public List<HotelModel> findAvailableHotelsByAddress(String address, LocalDate checkInDate, LocalDate checkOutDate) {
+//        System.out.println("Address: " + address);
+//        System.out.println("From: " + checkInDate);
+//        System.out.println("To: " + checkOutDate);
+//        return hotelRepo.findAvailableHotelsByAddress(address,checkInDate, checkOutDate);
+        List<HotelModel> hotels =
+                hotelRepo.findAvailableHotelsByAddress(address,checkInDate,checkOutDate);
+
+        return hotels;
+
+    }
 
 
     @Override

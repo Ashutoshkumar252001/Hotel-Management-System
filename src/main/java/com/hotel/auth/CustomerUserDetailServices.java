@@ -1,7 +1,9 @@
 package com.hotel.auth;
 
-import com.hotel.models.UserModel;
-import com.hotel.repo.UserRepository;
+import com.hotel.enums.Role;
+import com.hotel.exception.CustomerNotFoundException;
+import com.hotel.models.CustomerModel;
+import com.hotel.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,22 +17,22 @@ import java.util.Optional;
 public class CustomerUserDetailServices implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepo customerRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<UserModel> userOpt = userRepository.findByUserName(userName);
-        if(userOpt.isEmpty()){
-            throw new UsernameNotFoundException("User not found with username: " + userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<CustomerModel> customerOpt = customerRepo.findByUsername(username);
+        if(customerOpt.isEmpty()){
+            throw new CustomerNotFoundException("User not found with username: " + username);
         }
 
-        UserModel user = userOpt.get();
-        String[] rolesArray = user.getRoles().split(",");
+        CustomerModel customer = customerOpt.get();
+        Role role = customer.getRole();
 
         return User.builder()
-                .username(user.getUserName())
-                .password(user.getPassWord())
-                .roles(rolesArray)
+                .username(customer.getUsername())
+                .password(customer.getPassword())
+                .roles(role.name())
                 .build();
 
     }

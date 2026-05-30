@@ -11,6 +11,9 @@ import com.hotel.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,9 @@ public class BookingServicesImpl implements BookingServices {
     @Autowired
     private CustomerServices customerServices;
 
+
+
+
     @Override
     public BookingModel getBookingById(Long id)
             throws BookingNotFoundException {
@@ -51,12 +57,7 @@ public class BookingServicesImpl implements BookingServices {
     public List<BookingModel> findAllBookings() {
         return bookingRepo.findAll();
     }
-    @Override
-    public List<BookingModel> findBookingsByCustomer(String username) {
 
-        return bookingRepo.findByCustomerUserUserName(username);
-
-    }
 
 
 
@@ -71,8 +72,11 @@ public class BookingServicesImpl implements BookingServices {
         if (booking.getId() == null) {
             booking.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
             booking.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
-            booking.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+            booking.setCustomer(customerServices.findCustomerById(booking.getCustomer().getId()));
             booking.setStatus(BookingStatus.CONFIRMED);
+
+
+
 
 
             PaymentModel payment = new PaymentModel();
@@ -97,7 +101,7 @@ public class BookingServicesImpl implements BookingServices {
                 BookingModel b = bookingOpt.get();
             b.setHotel(hotelServices.getHotelById(booking.getHotel().getId()));
             b.setRoom(roomServices.getRoomById(booking.getRoom().getId()));
-            b.setCustomer(customerServices.getCustomerById(booking.getCustomer().getId()));
+            b.setCustomer(customerServices.findCustomerById(booking.getCustomer().getId()));
 
             Long days = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
 
@@ -114,10 +118,8 @@ public class BookingServicesImpl implements BookingServices {
             b.setCheckInDate(booking.getCheckInDate());
                 b.setCheckOutDate(booking.getCheckOutDate());
                 b.setStatus(booking.getStatus());
+                b.setPayment(paymentModel);
 
-
-
-            b.setPayment(paymentModel);
 
 
             bookingRepo.save(b);
@@ -134,6 +136,15 @@ public class BookingServicesImpl implements BookingServices {
             }
             bookingRepo.deleteById(id);
         }
+
+    @Override
+    public List<BookingModel> findByCustomer(CustomerModel customer) {
+
+        return bookingRepo.findByCustomer(customer);
+    }
+
+
+
     }
 
 

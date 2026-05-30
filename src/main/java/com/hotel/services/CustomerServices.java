@@ -2,15 +2,15 @@ package com.hotel.services;
 
 import com.hotel.exception.CustomerNotFoundException;
 import com.hotel.models.CustomerModel;
-import com.hotel.models.UserModel;
 
 import java.util.List;
 
 public interface CustomerServices {
-CustomerModel getCustomerById(Long id) throws CustomerNotFoundException;
+CustomerModel findCustomerById(Long id) throws CustomerNotFoundException;
 List<CustomerModel> findAllCustomer();
-void saveCustomer(CustomerModel customer);
+CustomerModel saveCustomer(CustomerModel customer)throws Exception;
 void deleteCustomer(Long id);
+    CustomerModel findByUsername(String username);
 
 
 }
