@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -170,6 +172,7 @@ public class BookingController
     @ResponseBody
     public List<RoomModel> getRoomsByHotel(@PathVariable Long hotelId)
     {
+
         return roomServices.findByHotelId(hotelId);
     }
 
@@ -178,6 +181,8 @@ public class BookingController
 
             @PathVariable Long hotelId,
             Authentication authentication,
+            @RequestParam String checkIn,
+            @RequestParam String checkOut,
             Model model
     )
     {
@@ -187,12 +192,16 @@ public class BookingController
         CustomerModel customer = customerServices.findByUsername(username);
 
         HotelModel hotel = hotelServices.getHotelById(hotelId);
+        LocalDate checkInDate = LocalDate.parse(checkIn);
+        LocalDate checkOutDate = LocalDate.parse(checkOut);
 
         BookingModel booking = new BookingModel();
 
         booking.setCustomer(customer);
         booking.setHotel(hotel);
         booking.setRoom(new RoomModel());
+        booking.setCheckInDate(checkInDate);
+        booking.setCheckOutDate(checkOutDate);
 
         booking.setPayment(new PaymentModel());
 
@@ -213,6 +222,11 @@ public class BookingController
                     bookingServices.getBookingById(id);
 
             booking.setStatus(BookingStatus.CANCELLED);
+
+            booking.setCancelledAt(LocalDateTime.now());
+            booking.setCancelledBy(
+                    booking.getCustomer().getName()
+            );
 
             bookingServices.saveBooking(booking);
 

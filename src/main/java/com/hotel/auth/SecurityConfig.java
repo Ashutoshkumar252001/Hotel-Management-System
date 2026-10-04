@@ -79,6 +79,10 @@ public class SecurityConfig { // this is the core of integration
                         .hasAnyRole("USER")
 
 
+                        .requestMatchers("/customer/sorting/**")
+                        .hasRole("USER")
+
+
 
                         // List, view, find pages -- any authenticated user
                         .anyRequest().authenticated()

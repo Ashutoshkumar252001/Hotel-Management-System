@@ -1,914 +1,781 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-
-        :root{
-            --bg:#020617;
-            --card:#0f172a;
-            --border:rgba(255,255,255,.08);
-            --text:#f8fafc;
-            --muted:#94a3b8;
-            --primary:#38bdf8;
-            --primary2:#6366f1;
-            --success:#22c55e;
-            --danger:#ef4444;
+        :root {
+            --bg: #020617;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #38bdf8;
+            --primary2: #6366f1;
+            --success: #22c55e;
+            --danger: #ef4444;
         }
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Poppins',sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        body{
+        body {
             background:
-                    radial-gradient(circle at top left,
-                    rgba(56,189,248,.18),
-                    transparent 30%),
-
-                    radial-gradient(circle at bottom right,
-                    rgba(99,102,241,.16),
-                    transparent 30%),
-
-                    linear-gradient(135deg,#020617,#0f172a);
-
-            color:white;
-            min-height:100vh;
+                radial-gradient(circle at top left, rgba(56, 189, 248, .18), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(99, 102, 241, .16), transparent 30%),
+                linear-gradient(135deg, #020617, #0f172a);
+            color: white;
+            min-height: 100vh;
         }
 
-        a{
-            text-decoration:none;
-            color:inherit;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        /* NAVBAR */
+        /* ================= NAVBAR ================= */
 
-        .navbar{
-            width:100%;
-            padding:20px 40px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            background:rgba(2,6,23,.75);
-            backdrop-filter:blur(18px);
-            border-bottom:1px solid rgba(255,255,255,.06);
-            position:sticky;
-            top:0;
-            z-index:999;
-            flex-wrap:wrap;
-            gap:20px;
+        .navbar {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 6, 23, .75);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .logo{
-            display:flex;
-            align-items:center;
-            gap:14px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .logo-icon{
-            width:52px;
-            height:52px;
-            border-radius:18px;
-            background:
-                    linear-gradient(135deg,
-                    var(--primary),
-                    var(--primary2));
-
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-size:22px;
-            box-shadow:0 12px 30px rgba(56,189,248,.28);
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            box-shadow: 0 12px 30px rgba(56, 189, 248, .28);
         }
 
-        .logo h2{
-            font-size:30px;
-            font-weight:800;
+        .logo h2 {
+            font-size: 30px;
+            font-weight: 800;
         }
 
-        .logo span{
-            color:var(--primary);
+        .logo span {
+            color: var(--primary);
         }
 
-        /* NAV ACTIONS */
+        /* ================= NAV ACTIONS ================= */
 
-        .nav-actions{
-            display:flex;
-            align-items:center;
-            gap:14px;
-            flex-wrap:wrap;
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .btn{
-            height:48px;
-            padding:0 22px;
-            border:none;
-            border-radius:14px;
-            cursor:pointer;
-            font-size:14px;
-            font-weight:600;
-            transition:.3s;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:8px;
+        .btn {
+            height: 48px;
+            padding: 0 22px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .btn-book{
-            background:
-                    linear-gradient(135deg,
-                    var(--primary),
-                    var(--primary2));
-
-            color:white;
-            box-shadow:0 14px 35px rgba(56,189,248,.25);
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            color: white;
+            transition: .3s;
         }
 
-        .btn-book:hover{
-            transform:translateY(-3px);
+        .btn-book:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(56, 189, 248, .35);
         }
 
-        .btn-logout{
-            background:rgba(255,255,255,.06);
-            color:white;
-            border:1px solid rgba(255,255,255,.08);
+        .btn-logout {
+            background: rgba(255, 255, 255, .06);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, .08);
         }
 
-        .btn-logout:hover{
-            background:rgba(239,68,68,.18);
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, .18);
         }
 
-        /* SEARCH FORM */
+        /* ================= SEARCH FORM ================= */
 
-        .search-form{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            flex-wrap:wrap;
+        .search-section {
+            margin: 35px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .search-form input{
-            height:48px;
-            padding:0 14px;
-            border:none;
-            outline:none;
-            border-radius:14px;
-            background:rgba(255,255,255,.08);
-            color:white;
-            border:1px solid rgba(255,255,255,.08);
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .search-form input::-webkit-calendar-picker-indicator{
-            filter:invert(1);
-            cursor:pointer;
+        .search-form input {
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            outline: none;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .08);
+            color: white;
         }
 
-        /* PAGE */
-
-        .page{
-            width:94%;
-            max-width:1350px;
-            margin:35px auto;
+        .search-form input[type="text"] {
+            min-width: 180px;
         }
 
-        /* HERO */
-
-        .hero{
-            width:100%;
-            padding:40px;
-            border-radius:32px;
-            background:
-                    linear-gradient(135deg,
-                    rgba(56,189,248,.14),
-                    rgba(255,255,255,.03));
-
-            border:1px solid rgba(255,255,255,.08);
-
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            gap:25px;
-
-            overflow:hidden;
-            position:relative;
+        .search-form input[type="text"]::placeholder {
+            color: #cbd5e1;
         }
 
-        .hero::before{
-            content:"";
-            position:absolute;
-            width:350px;
-            height:350px;
-            border-radius:50%;
-            background:rgba(99,102,241,.14);
-            top:-180px;
-            right:-100px;
+        .search-form input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
         }
 
-        .hero-left{
-            z-index:2;
+        /* ================= PAGE ================= */
+
+        .page {
+            width: 94%;
+            max-width: 1350px;
+            margin: 35px auto;
         }
 
-        .badge{
-            width:max-content;
-            padding:10px 18px;
-            border-radius:999px;
-            background:rgba(56,189,248,.14);
-            color:#bae6fd;
-            font-size:13px;
-            margin-bottom:18px;
-            border:1px solid rgba(56,189,248,.18);
+        /* ================= HERO ================= */
+
+        .hero {
+            width: 100%;
+            padding: 40px;
+            border-radius: 32px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, .14), rgba(255, 255, 255, .03));
+            border: 1px solid rgba(255, 255, 255, .08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .hero h1{
-            font-size:48px;
-            font-weight:800;
-            margin-bottom:10px;
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, .14);
+            top: -180px;
+            right: -100px;
         }
 
-        .hero h1 span{
-            color:var(--primary);
+        .hero-left {
+            z-index: 2;
         }
 
-        .hero p{
-            color:var(--muted);
-            max-width:600px;
-            line-height:1.8;
+        .badge {
+            width: max-content;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, .14);
+            color: #bae6fd;
+            font-size: 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(56, 189, 248, .18);
         }
 
-        /* PROFILE */
-
-        .customer-profile{
-            min-width:290px;
-            padding:28px;
-            border-radius:28px;
-            background:rgba(255,255,255,.05);
-            border:1px solid rgba(255,255,255,.08);
-            backdrop-filter:blur(14px);
-            text-align:center;
-            z-index:2;
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
         }
 
-        .customer-img{
-            width:110px;
-            height:110px;
-            border-radius:50%;
-            object-fit:cover;
-            border:4px solid rgba(56,189,248,.4);
+        .hero h1 span {
+            color: var(--primary);
         }
 
-        .customer-profile h3{
-            margin-top:16px;
-            font-size:24px;
+        .hero p {
+            color: var(--muted);
+            max-width: 600px;
+            line-height: 1.8;
         }
 
-        .customer-profile p{
-            margin-top:6px;
-            color:var(--muted);
+        /* ================= PROFILE ================= */
+
+        .customer-profile {
+            min-width: 290px;
+            padding: 28px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(14px);
+            text-align: center;
+            z-index: 2;
         }
 
-        .status{
-            width:max-content;
-            margin:18px auto 0;
-            padding:8px 16px;
-            border-radius:999px;
-            background:rgba(34,197,94,.16);
-            color:#bbf7d0;
-            font-size:13px;
-            font-weight:600;
+        .customer-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(56, 189, 248, .4);
         }
 
-        /* CARDS */
-
-        .cards{
-            margin-top:30px;
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-            gap:22px;
+        .customer-profile h3 {
+            margin-top: 16px;
+            font-size: 24px;
         }
 
-        .card{
-            padding:28px;
-            border-radius:28px;
-            background:rgba(255,255,255,.05);
-            border:1px solid rgba(255,255,255,.08);
-            transition:.3s;
+        .customer-profile p {
+            margin-top: 6px;
+            color: var(--muted);
         }
 
-        .card:hover{
-            transform:translateY(-5px);
+        .status {
+            width: max-content;
+            margin: 18px auto 0;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, .16);
+            color: #bbf7d0;
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .card-top{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
+        /* ================= CARDS ================= */
+
+        .cards {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 22px;
         }
 
-        .card-icon{
-            width:60px;
-            height:60px;
-            border-radius:20px;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            background:
-                    linear-gradient(135deg,
-                    var(--primary),
-                    var(--primary2));
-
-            font-size:22px;
+        .card {
+            padding: 28px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            transition: .3s;
         }
 
-        .card h2{
-            font-size:34px;
-            font-weight:800;
-            margin-bottom:8px;
+        .card:hover {
+            transform: translateY(-5px);
         }
 
-        .card p{
-            color:var(--muted);
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* TABLE */
-
-        .table-card{
-            margin-top:35px;
-            border-radius:32px;
-            background:rgba(255,255,255,.05);
-            border:1px solid rgba(255,255,255,.08);
-            overflow:hidden;
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            font-size: 22px;
         }
 
-        .table-header{
-            padding:28px 30px;
-            border-bottom:1px solid rgba(255,255,255,.06);
+        .card h2 {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 8px;
         }
 
-        .table-header h2{
-            font-size:28px;
-            font-weight:700;
+        .card p {
+            color: var(--muted);
         }
 
-        .table-wrapper{
-            overflow-x:auto;
+        /* ================= TABLE ================= */
+
+        .table-card {
+            margin-top: 35px;
+            border-radius: 32px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            overflow: hidden;
         }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
+        .table-header {
+            padding: 28px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
         }
 
-        thead{
-            background:rgba(255,255,255,.03);
+        .table-header h2 {
+            font-size: 28px;
+            font-weight: 700;
         }
 
-        th{
-            padding:18px;
-            text-align:left;
-            color:#cbd5e1;
-            font-size:14px;
-            font-weight:600;
+        .table-wrapper {
+            overflow-x: auto;
         }
 
-        td{
-            padding:18px;
-            border-top:1px solid rgba(255,255,255,.06);
-            font-size:14px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        tbody tr:hover{
-            background:rgba(255,255,255,.03);
+        thead {
+            background: rgba(255, 255, 255, .03);
         }
 
-        .status-badge{
-            padding:8px 14px;
-            border-radius:999px;
-            font-size:12px;
-            font-weight:600;
-            background:rgba(34,197,94,.15);
-            color:#bbf7d0;
+        th {
+            padding: 18px;
+            text-align: left;
+            color: #cbd5e1;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        /* HOTEL RESULT */
-
-        .hotel-results{
-            margin-top:35px;
+        td {
+            padding: 18px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            font-size: 14px;
         }
 
-        .hotel-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-            gap:24px;
+        tbody tr:hover {
+            background: rgba(255, 255, 255, .03);
         }
 
-        .hotel-card{
-            padding:24px;
-            border-radius:28px;
-            background:rgba(255,255,255,.05);
-            border:1px solid rgba(255,255,255,.08);
-            transition:.3s;
+        .status-badge {
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(34, 197, 94, .15);
+            color: #bbf7d0;
         }
 
-        .hotel-card:hover{
-            transform:translateY(-5px);
-            border-color:rgba(56,189,248,.3);
+        /* ================= HOTEL RESULTS ================= */
+
+        .hotel-results {
+            margin-top: 40px;
         }
 
-        .hotel-card h3{
-            font-size:24px;
-            margin-bottom:12px;
+        .hotel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
 
-        .hotel-card p{
-            color:var(--muted);
-            margin-bottom:10px;
+        .hotel-card {
+            padding: 24px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            transition: .3s;
         }
 
-        /* RESPONSIVE */
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, .3);
+        }
 
-        @media(max-width:1000px){
+        .hotel-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
 
-            .hero{
-                flex-direction:column;
-                align-items:flex-start;
+        .hotel-card p {
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        /* ================= PROFILE DROPDOWN ================= */
+
+        .login-btn,
+        .register-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: .3s;
+        }
+
+        .login-btn:hover,
+        .register-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #38bdf8;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .profile-btn:hover {
+            background: #0ea5e9;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            min-width: 260px;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .4);
+            z-index: 1000;
+        }
+
+        .profile-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .profile-header {
+            padding: 15px;
+        }
+
+        .profile-header h4 {
+            margin-bottom: 5px;
+        }
+
+        .profile-header p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            background: #334155;
+        }
+
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .customer-profile{
-                width:100%;
+            .customer-profile {
+                width: 100%;
             }
         }
 
-        @media(max-width:700px){
-
-            .navbar{
-                padding:20px;
+        @media (max-width: 768px) {
+            .search-form,
+            .sort-container {
+                flex-direction: column;
+                width: 100%;
             }
 
-            .hero{
-                padding:28px;
+            .search-form input,
+            .sort-container select,
+            .btn {
+                width: 100%;
             }
 
-            .hero h1{
-                font-size:34px;
+            .hero {
+                flex-direction: column;
             }
 
-            .search-form{
-                width:100%;
-            }
-
-            .search-form input{
-                width:100%;
-            }
-
-            .btn{
-                width:100%;
+            .customer-profile {
+                width: 100%;
             }
         }
-        .search-form input[type="text"]{
-    height:48px;
-    padding:0 14px;
-    border:none;
-    outline:none;
-    border-radius:14px;
-    background:rgba(255,255,255,.08);
-    color:white;
-    border:1px solid rgba(255,255,255,.08);
-    min-width:180px;
-}
-
-.search-form input[type="text"]::placeholder{
-    color:#cbd5e1;
-}
-
     </style>
-
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-
+<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
 
+    <!-- LOGO -->
     <div class="logo">
-
         <div class="logo-icon">
-
             <i class="fa-solid fa-hotel"></i>
-
         </div>
-
         <h2>Stay<span>Ease</span></h2>
-
     </div>
 
+    <!-- NAVIGATION -->
     <div class="nav-actions">
 
-        <!-- NEW BOOKING -->
+        <a href="/">Home</a>
 
-        <a th:href="@{/booking/new}"
-           class="btn btn-book">
-
-            <i class="fa-solid fa-plus"></i>
-
-            New Booking
-
-        </a>
-
-        <!-- EDIT PROFILE -->
-
-        <a th:href="@{/profile/edit/{id}(id=${customer.id})}"
-           class="btn btn-book">
-
-            <i class="fa-solid fa-user-pen"></i>
-
-            Edit Profile
-
-        </a>
-
-        <!-- SEARCH HOTEL -->
-
-        <form th:action="@{/available-hotels}"
-              method="get"
-              class="search-form">
-
-            <!-- CITY -->
-
-            <input type="text"
-                   name="address"
-                   placeholder="Enter Address"
-                   required>
-
-            <input type="date"
-                   name="startDate"
-                   required>
-
-            <input type="date"
-                   name="endDate"
-                   required>
-
-            <button type="submit"
-                    class="btn btn-book">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                Search Hotels
-
+        <!-- USER LOGGED IN -->
+        <div class="profile-dropdown" th:if="${customer != null}">
+            <button class="profile-btn">
+                <i class="fa-solid fa-user-circle"></i>
+                <span th:text="${customer.name}">Customer</span>
+                <i class="fa-solid fa-caret-down"></i>
             </button>
 
-        </form>
+            <div class="dropdown-content">
+                <div class="profile-header">
+                    <h4 th:text="${customer.name}">Name</h4>
+                    <p th:text="${customer.email}">email@gmail.com</p>
+                </div>
 
-        <!-- LOGOUT -->
+                <hr>
 
-        <form th:action="@{/logout}"
-              method="post">
+                <a th:href="@{/profile/edit/{id}(id=${customer.id})}">
+                    <i class="fa-solid fa-user"></i>
+                    My Profile
+                </a>
 
-            <button type="submit"
-                    class="btn btn-logout">
+                <a th:href="@{/customer/bookings}">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    My Bookings
+                </a>
 
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <a th:href="@{/profile/edit/{id}(id=${customer.id})}">
+                    <i class="fa-solid fa-user-pen"></i>
+                    Edit Profile
+                </a>
 
-                Logout
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
 
-            </button>
+        <!-- USER NOT LOGGED IN -->
+        <div th:if="${customer == null}">
+            <a th:href="@{/login}" class="login-btn">
+                <i class="fa-solid fa-user"></i>
+                Login
+            </a>
 
-        </form>
+            <a th:href="@{/register}" class="register-btn">
+                <i class="fa-solid fa-user-plus"></i>
+                Register
+            </a>
+        </div>
 
     </div>
 
 </nav>
 
-<!-- PAGE -->
-
+<!-- ================= PAGE ================= -->
 <div class="page">
 
-    <!-- HERO -->
+    <!-- SEARCH + FILTER -->
+    <div class="search-section">
 
+        <form th:action="@{/available-hotels}" method="get" class="search-form">
+            <input type="text" name="address" placeholder="Enter Address" required>
+            <input type="date" name="startDate" required>
+            <input type="date" name="endDate" required>
+
+            <button type="submit" class="btn btn-book">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Search Hotels
+            </button>
+        </form>
+
+        <div class="sort-container">
+            <select id="sortField">
+                <option value="rating">Rating</option>
+                <option value="name">Hotel Name</option>
+                <option value="address">Address</option>
+            </select>
+
+            <button type="button" class="btn btn-book" onclick="sortHotels()">
+                Sort Hotels
+            </button>
+
+            <a th:href="@{/customer/ascending}" class="btn btn-book">
+                Price Low To High
+            </a>
+
+            <a th:href="@{/customer/descending}" class="btn btn-book">
+                Price High To Low
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        function sortHotels() {
+            let field = document.getElementById("sortField").value;
+            window.location.href = "/customer/sorting/" + field;
+        }
+    </script>
+
+    <!-- ================= HERO ================= -->
     <div class="hero">
 
         <div class="hero-left">
-
-            <div class="badge">
-
-                ✦ Premium Customer Dashboard
-
-            </div>
+            <div class="badge">✦ Premium Customer Dashboard</div>
 
             <h1>
-
                 Welcome Back,
-                <span th:text="${customer.name}">
-                    Customer
-                </span>
-
+                <span th:text="${customer.name}">Customer</span>
             </h1>
 
             <p>
-
                 Manage your hotel bookings, explore luxury stays,
                 and enjoy seamless hospitality experience.
-
             </p>
-
         </div>
 
         <!-- PROFILE -->
-
         <div class="customer-profile">
+            <img src="https://i.pravatar.cc/300?img=12" class="customer-img" alt="Customer">
 
-            <img src="https://i.pravatar.cc/300?img=12"
-                 class="customer-img">
+            <h3 th:text="${customer.name}">Customer Name</h3>
 
-            <h3 th:text="${customer.name}">
-                Customer Name
-            </h3>
+            <p>Premium Hotel Customer</p>
 
-            <p>
-                Premium Hotel Customer
-            </p>
-
-            <div class="status">
-
-                Active Member
-
-            </div>
-
+            <div class="status">Active Member</div>
         </div>
 
     </div>
 
-    <!-- CARDS -->
-
+    <!-- ================= CARDS ================= -->
     <div class="cards">
 
         <div class="card">
-
             <div class="card-top">
-
                 <div>
-
-                    <h2 th:text="${bookingList.size()}">
-                        0
-                    </h2>
-
+                    <h2 th:text="${bookingList.size()}">0</h2>
                     <p>Total Bookings</p>
-
                 </div>
-
                 <div class="card-icon">
-
                     <i class="fa-solid fa-calendar-check"></i>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="card">
-
             <div class="card-top">
-
                 <div>
-
                     <h2>24×7</h2>
-
                     <p>Customer Support</p>
-
                 </div>
-
                 <div class="card-icon">
-
                     <i class="fa-solid fa-headset"></i>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="card">
-
             <div class="card-top">
-
                 <div>
-
                     <h2>4.9★</h2>
-
                     <p>Luxury Experience</p>
-
                 </div>
-
                 <div class="card-icon">
-
                     <i class="fa-solid fa-star"></i>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="card">
-
             <div class="card-top">
-
                 <div>
-
                     <h2>100%</h2>
-
                     <p>Secure Booking</p>
-
                 </div>
-
                 <div class="card-icon">
-
                     <i class="fa-solid fa-shield-halved"></i>
-
                 </div>
-
             </div>
-
         </div>
 
     </div>
 
-    <!-- AVAILABLE HOTELS -->
-
-    <div class="hotel-results"
-         th:if="${hotels != null}">
+    <!-- ================= HOTEL RESULTS ================= -->
+    <div class="hotel-results" th:if="${hotels != null}">
 
         <div class="table-header">
-
-            <h2>
-
-                Available Hotels
-
-            </h2>
-
+            <h2>Available Hotels</h2>
         </div>
 
         <div class="hotel-grid">
-
-            <div class="hotel-card"
-                 th:each="hotel : ${hotels}">
-
-                <h3 th:text="${hotel.name}">
-                    Hotel Name
-                </h3>
+            <div class="hotel-card" th:each="hotel : ${hotels}">
+                <h3 th:text="${hotel.name}">Hotel Name</h3>
 
                 <p>
-
                     <i class="fa-solid fa-location-dot"></i>
-
                     <span th:text="${hotel.address}"></span>
-
                 </p>
 
                 <p>
-
                     <i class="fa-solid fa-star"></i>
-
                     Luxury Stay Available
-
                 </p>
 
-                <a th:href="@{/booking/new}"
-                   class="btn btn-book"
-                   style="margin-top:15px; width:100%;">
-
+                <a th:href="@{/booking/new}" class="btn btn-book" style="width:100%;margin-top:15px;">
                     Book Now
-
                 </a>
-
             </div>
-
-        </div>
-
-    </div>
-
-    <!-- BOOKINGS TABLE -->
-
-    <div class="table-card">
-
-        <div class="table-header">
-
-            <h2>
-
-                Your Hotel Bookings
-
-            </h2>
-
-        </div>
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                <tr>
-
-                    <th>ID</th>
-
-                    <th>Customer</th>
-
-                    <th>Hotel</th>
-
-                    <th>Room</th>
-
-                    <th>Check In</th>
-
-                    <th>Check Out</th>
-
-                    <th>Status</th>
-
-                    <th> Action</th>
-
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                <tr th:each="booking : ${bookingList}">
-
-                    <td th:text="${booking.id}"></td>
-
-                    <td th:text="${booking.customer.name}"></td>
-
-                    <td th:text="${booking.hotel.name}"></td>
-
-                    <td th:text="${booking.room.roomNumber}"></td>
-
-                    <td th:text="${booking.checkInDate}"></td>
-
-                    <td th:text="${booking.checkOutDate}"></td>
-
-                    <td>
-
-                        <span class="status-badge"
-                              th:text="${booking.status}">
-                        </span>
-
-                    </td>
-                    <td>
-
-<!--                        <div th:if="${booking.status.name() != 'CHECKED_IN'}">-->
-                            <div th:if="${booking.status.name() != 'CHECKED_IN'
-                              and booking.status.name() != 'CANCELLED'}">
-
-
-
-                            <a th:href="@{/booking/edit/{id}(id=${booking.id})}"
-                               class="btn"
-                               style="background:#22c55e;color:white;">
-                                Edit
-                            </a>
-
-                            <a th:href="@{/booking/cancel/{id}(id=${booking.id})}"
-                               class="btn"
-                               style="background:#ef4444;color:white;"
-                               onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                Cancel
-                            </a>
-
-                        </div>
-
-                        <div th:if="${booking.status.name() == 'CHECKED_IN'}">
-
-                            <a th:href="@{/booking/view/{id}(id=${booking.id})}"
-                               class="btn btn-book">
-                                View
-                            </a>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
-                </tbody>
-
-            </table>
-
         </div>
 
     </div>
@@ -916,5 +783,4 @@
 </div>
 
 </body>
-
 </html>

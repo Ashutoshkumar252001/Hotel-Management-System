@@ -364,6 +364,10 @@
 
             <th>Status</th>
 
+            <th>Cancelled By</th>
+
+            <th>Cancelled At</th>
+
             <th>Actions</th>
 
         </tr>
@@ -481,6 +485,32 @@
                 </span>
 
             </td>
+
+
+            <td>
+
+    <span th:if="${b.cancelledBy != null}"
+          th:text="${b.cancelledBy}">
+    </span>
+
+                <span th:if="${b.cancelledBy == null}">
+        -
+    </span>
+
+            </td>
+
+            <td>
+
+    <span th:if="${b.cancelledAt != null}"
+          th:text="${#temporals.format(b.cancelledAt,'dd-MM-yyyy HH:mm')}">
+    </span>
+
+                <span th:if="${b.cancelledAt == null}">
+        -
+    </span>
+
+            </td>
+
 
             <!-- ACTIONS -->
 

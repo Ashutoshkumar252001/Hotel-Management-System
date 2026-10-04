@@ -1,6 +1,7 @@
 package com.hotel.services;
 
 import com.hotel.exception.RoomNotFoundException;
+import com.hotel.models.HotelModel;
 import com.hotel.models.RoomModel;
 
 import java.util.List;
@@ -17,5 +18,8 @@ public interface RoomServices {
     void deleteRoom(Long id);
 
     List<RoomModel> findByHotelId(Long hotelId);
+    List<RoomModel> getSortedByPriceInAscendingOrder(String field);
+    List<RoomModel> getSortedByPriceInDescendingOrder(String field);
+
 }
 

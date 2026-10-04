@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 public class RoomModel extends BaseModel {
 
    @ManyToOne
-   @JsonIgnoreProperties("rooms")
+   @JsonIgnoreProperties({"rooms","amenities"})
    @JoinColumn(name = "hotel_id")
    private HotelModel hotel;
    private Integer roomNumber;

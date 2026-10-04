@@ -1,6 +1,8 @@
 package com.hotel.controller;
 
+import com.hotel.enums.HotelRating;
 import com.hotel.exception.HotelNotFoundException;
+import com.hotel.models.AmenitiesModel;
 import com.hotel.models.HotelModel;
 import com.hotel.services.HotelServices;
 import com.hotel.services.RoomServices;
@@ -30,8 +32,14 @@ public class HotelController
 
     @GetMapping("/new")
     public String createNewHotel(Model model)
+
     {
-        model.addAttribute("hotel", new HotelModel());
+        HotelModel hotel = new HotelModel();
+        hotel.setAmenities(new AmenitiesModel());
+
+        model.addAttribute("hotel", hotel);
+
+       // model.addAttribute("hotel", new HotelModel());
         return "hotel-form";
     }
 
@@ -131,5 +139,8 @@ public class HotelController
         }
         return "hotel";
     }
+
+
+
 
 }

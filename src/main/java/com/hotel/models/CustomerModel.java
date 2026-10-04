@@ -3,8 +3,8 @@ package com.hotel.models;
 import com.hotel.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
 
 
 @Entity
@@ -14,6 +14,9 @@ public class CustomerModel extends BaseModel {
 
     private String name;
     private Long phone;
+
+
+
 
     @Column(unique = true)
     private String email;
@@ -98,4 +101,6 @@ public class CustomerModel extends BaseModel {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
 }

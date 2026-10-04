@@ -1,5 +1,7 @@
 package com.hotel.repo;
 
+import com.hotel.enums.HotelRating;
+import com.hotel.models.AmenitiesModel;
 import com.hotel.models.HotelModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,5 +37,7 @@ public interface HotelRepo extends JpaRepository<HotelModel,Long> {
             @Param("checkInDate") LocalDate checkInDate,
             @Param("checkOutDate") LocalDate checkOutDate
     );
+
+
 }
 

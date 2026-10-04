@@ -3,6 +3,8 @@ package com.hotel.controller;
 import com.hotel.exception.CustomerNotFoundException;
 import com.hotel.models.CustomerModel;
 import com.hotel.services.CustomerServices;
+import com.hotel.services.HotelServices;
+import com.hotel.services.RoomServices;
 import com.hotel.validator.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,11 @@ public class CustomerController
 
     @Autowired
     private CustomerValidator customerDataValidator;
+
+    @Autowired private  HotelServices hotelServices;
+
+    @Autowired
+    private RoomServices roomServices;
 
 
     @GetMapping("/new")
@@ -125,6 +132,34 @@ public class CustomerController
 
 
     }
+
+    @GetMapping("/sorting/{field}")
+    public String sortedByRating(@PathVariable String field, Model model){
+        model.addAttribute("hotels",hotelServices.getSortedByRating(field));
+        model.addAttribute("field",field);
+        return "sorted-hotels";
+    }
+
+    @GetMapping("/ascending")
+    public String sortedByPriceInAscendingOrder(Model model){
+
+        model.addAttribute("rooms",roomServices.getSortedByPriceInAscendingOrder("pricePerNight"));
+        model.addAttribute("field" ,"price low to high");
+
+        return "sorted-rooms";
+
+    }
+
+    @GetMapping("/descending")
+    public String sortedByPriceInDescendingOrder(Model model){
+
+        model.addAttribute("rooms",roomServices.getSortedByPriceInDescendingOrder("pricePerNight"));
+        model.addAttribute("field" ,"Price High to Low");
+
+        return "sorted-rooms";
+
+    }
+
 
 }
 

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <title>My Bookings</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Poppins',sans-serif;
+    }
+
+    body{
+        background:#020617;
+        color:white;
+        min-height:100vh;
+        padding:30px;
+    }
+
+    .container{
+        max-width:1400px;
+        margin:auto;
+    }
+
+    .header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:30px;
+    }
+
+    .header h1{
+        color:#38bdf8;
+    }
+
+    .back-btn{
+        text-decoration:none;
+        color:white;
+        background:#38bdf8;
+        padding:12px 20px;
+        border-radius:10px;
+    }
+
+    .table-card{
+        background:#0f172a;
+        border-radius:20px;
+        overflow:hidden;
+        border:1px solid rgba(255,255,255,.08);
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    thead{
+        background:#1e293b;
+    }
+
+    th{
+        padding:18px;
+        text-align:left;
+    }
+
+    td{
+        padding:18px;
+        border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    tr:hover{
+        background:rgba(255,255,255,.03);
+    }
+
+    .status{
+        padding:8px 15px;
+        border-radius:20px;
+        background:#22c55e20;
+        color:#22c55e;
+        font-size:12px;
+        font-weight:600;
+    }
+
+    .btn{
+        padding:8px 15px;
+        border-radius:8px;
+        text-decoration:none;
+        color:white;
+        display:inline-block;
+        margin-right:5px;
+    }
+
+    .edit{
+        background:#22c55e;
+    }
+
+    .cancel{
+        background:#ef4444;
+    }
+
+    .view{
+        background:#38bdf8;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+
+    <h1>
+      <i class="fa-solid fa-calendar-check"></i>
+      My Bookings
+    </h1>
+
+    <a th:href="@{/}"
+       class="back-btn">
+      Back Dashboard
+    </a>
+
+  </div>
+
+  <div class="table-card">
+
+    <table>
+
+      <thead>
+
+      <tr>
+        <th>ID</th>
+        <th>Hotel</th>
+        <th>Room</th>
+        <th>Check In</th>
+        <th>Check Out</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+
+      </thead>
+
+      <tbody>
+
+      <tr th:each="booking : ${bookingList}">
+
+        <td th:text="${booking.id}"></td>
+
+        <td th:text="${booking.hotel.name}"></td>
+
+        <td th:text="${booking.room.roomNumber}"></td>
+
+        <td th:text="${booking.checkInDate}"></td>
+
+        <td th:text="${booking.checkOutDate}"></td>
+
+        <td>
+                    <span class="status"
+                          th:text="${booking.status}">
+                    </span>
+        </td>
+
+        <td>
+
+          <div th:if="${booking.status.name() != 'CHECKED_IN'
+                                 and booking.status.name() != 'CANCELLED'}">
+
+            <a th:href="@{/booking/edit/{id}(id=${booking.id})}"
+               class="btn edit">
+              Edit
+            </a>
+
+            <a th:href="@{/booking/cancel/{id}(id=${booking.id})}"
+               class="btn cancel"
+               onclick="return confirm('Cancel booking?')">
+              Cancel
+            </a>
+
+          </div>
+
+          <div th:if="${booking.status.name() == 'CHECKED_IN'}">
+
+            <a th:href="@{/booking/view/{id}(id=${booking.id})}"
+               class="btn view">
+              View
+            </a>
+
+          </div>
+
+        </td>
+
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sorted Hotels</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#020617;
+            color:white;
+            min-height:100vh;
+        }
+
+        .header{
+            background:#0f172a;
+            padding:25px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,.08);
+        }
+
+        .header h1{
+            color:#38bdf8;
+        }
+
+        .back-btn{
+            text-decoration:none;
+            background:#38bdf8;
+            color:white;
+            padding:12px 20px;
+            border-radius:10px;
+        }
+
+        .container{
+            width:90%;
+            max-width:1300px;
+            margin:40px auto;
+        }
+
+        .sort-info{
+            background:rgba(56,189,248,.12);
+            border:1px solid rgba(56,189,248,.3);
+            padding:18px;
+            border-radius:15px;
+            margin-bottom:30px;
+            color:#38bdf8;
+            font-weight:600;
+        }
+
+        .hotel-grid{
+            display:grid;
+            grid-template-columns:
+                    repeat(auto-fit,minmax(320px,1fr));
+            gap:25px;
+        }
+
+        .hotel-card{
+            background:#0f172a;
+            border-radius:20px;
+            padding:25px;
+            border:1px solid rgba(255,255,255,.08);
+            transition:.3s;
+        }
+
+        .hotel-card:hover{
+            transform:translateY(-5px);
+            border-color:#38bdf8;
+        }
+
+        .hotel-card h2{
+            margin-bottom:15px;
+            color:#38bdf8;
+        }
+
+        .hotel-card p{
+            margin:10px 0;
+            color:#cbd5e1;
+        }
+
+        .rating{
+            display:inline-block;
+            margin-top:10px;
+            background:#22c55e20;
+            color:#22c55e;
+            padding:8px 15px;
+            border-radius:20px;
+            font-size:14px;
+            font-weight:600;
+        }
+
+        .book-btn{
+            margin-top:20px;
+            display:block;
+            text-align:center;
+            text-decoration:none;
+            background:#38bdf8;
+            color:white;
+            padding:12px;
+            border-radius:10px;
+        }
+
+        .book-btn:hover{
+            background:#0ea5e9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>
+        <i class="fa-solid fa-hotel"></i>
+        Sorted Hotels
+    </h1>
+
+    <a th:href="@{/}"
+       class="back-btn">
+        Back Dashboard
+    </a>
+
+</div>
+
+<div class="container">
+
+    <div class="sort-info">
+
+        <i class="fa-solid fa-arrow-down-wide-short"></i>
+
+        Hotels Sorted By :
+        <span th:text="${field}"></span>
+
+    </div>
+
+    <div class="hotel-grid">
+
+        <div class="hotel-card"
+             th:each="hotel : ${hotels}">
+
+            <h2 th:text="${hotel.name}">
+                Hotel Name
+            </h2>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+
+                <span th:text="${hotel.address}">
+                    Address
+                </span>
+            </p>
+
+            <div class="rating">
+
+                <i class="fa-solid fa-star"></i>
+
+                <span th:text="${hotel.rating}">
+                    FIVE_STAR
+                </span>
+
+            </div>
+
+            <a th:href="@{/booking/new}"
+               class="book-btn">
+
+                Book Now
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

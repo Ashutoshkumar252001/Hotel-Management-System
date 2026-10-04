@@ -811,11 +811,11 @@
                     option.value = room.id;
 
                     option.text =
-                        room.roomNumber
-                        + ' | '
-                        + room.roomType
-                        + ' | ₹'
-                        + room.price;
+                        room.roomNumber+
+                         ' | ' +
+                         room.type +
+                         ' | ₹' +
+                         room.pricePerNight;
 
                     roomSelect.appendChild(option);
 

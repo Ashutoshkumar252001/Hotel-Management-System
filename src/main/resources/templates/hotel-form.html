@@ -106,6 +106,36 @@
         a:hover {
             text-decoration: underline;
         }
+        .input-group{
+    margin-bottom:15px;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.amenities-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:12px;
+    margin-top:15px;
+    margin-bottom:20px;
+}
+
+.amenities-grid label{
+    background:#1e293b;
+    padding:12px;
+    border-radius:10px;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+}
     </style>
 </head>
 
@@ -136,6 +166,42 @@
                     th:text="${r}">
             </option>
         </select>
+
+
+
+<h3>Amenities</h3>
+
+<div class="amenities-grid">
+
+    <label><input type="checkbox" th:field="*{amenities.wifi}"> WiFi</label>
+
+    <label><input type="checkbox" th:field="*{amenities.television}"> Television</label>
+
+    <label><input type="checkbox" th:field="*{amenities.telephone}"> Telephone</label>
+
+    <label><input type="checkbox" th:field="*{amenities.restaurant}"> Restaurant</label>
+
+    <label><input type="checkbox" th:field="*{amenities.swimmingPool}"> Swimming Pool</label>
+
+    <label><input type="checkbox" th:field="*{amenities.gym}"> Gym</label>
+
+    <label><input type="checkbox" th:field="*{amenities.airportShuttle}"> Airport Shuttle</label>
+
+    <label><input type="checkbox" th:field="*{amenities.freeParking}"> Free Parking</label>
+
+    <label><input type="checkbox" th:field="*{amenities.carRental}"> Car Rental</label>
+
+    <label><input type="checkbox" th:field="*{amenities.cctvSecurity}"> CCTV Security</label>
+
+    <label><input type="checkbox" th:field="*{amenities.privateBalcony}"> Private Balcony</label>
+
+    <label><input type="checkbox" th:field="*{amenities.jacuzzi}"> Jacuzzi</label>
+
+    <label><input type="checkbox" th:field="*{amenities.oceanView}"> Ocean View</label>
+
+    <label><input type="checkbox" th:field="*{amenities.privateBedding}"> Private Bedding</label>
+
+</div>
 
         <button type="submit"
                 th:text="${hotel.id == null ? 'Save Hotel' : 'Update Hotel'}">

@@ -1,6 +1,8 @@
 package com.hotel.services;
 
+import com.hotel.enums.HotelRating;
 import com.hotel.exception.HotelNotFoundException;
+import com.hotel.models.AmenitiesModel;
 import com.hotel.models.HotelModel;
 import com.hotel.models.RoomModel;
 
@@ -12,6 +14,7 @@ public interface HotelServices {
     HotelModel getHotelById(Long id) throws HotelNotFoundException;
 
     List<HotelModel> findAllHotels();
+    List<AmenitiesModel> findAllAmenities();
 
     void saveHotel(HotelModel hotel);
 
@@ -22,4 +25,5 @@ public interface HotelServices {
             LocalDate checkInDate,
             LocalDate checkOutDate);
     void deleteHotel(Long id);
+    List<HotelModel> getSortedByRating(String field);
 }

@@ -1,13 +1,18 @@
 package com.hotel.services.impl;
 
 
+import com.hotel.enums.HotelRating;
 import com.hotel.exception.HotelNotFoundException;
+import com.hotel.models.AmenitiesModel;
 import com.hotel.models.HotelModel;
 import com.hotel.models.RoomModel;
+import com.hotel.repo.AmenitiesRepo;
 import com.hotel.repo.HotelRepo;
 import com.hotel.repo.RoomRepo;
+import com.hotel.services.AmenitiesServices;
 import com.hotel.services.HotelServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +28,13 @@ public class HotelServicesImpl implements HotelServices {
     private HotelRepo hotelRepo;
 
     @Autowired
+    private AmenitiesRepo amenitiesRepo;
+
+    @Autowired
     private RoomRepo roomRepo;
+
+    @Autowired
+    private AmenitiesServices amenitiesServices;
 
     @Override
     public HotelModel getHotelById(Long id) throws HotelNotFoundException {
@@ -45,11 +56,26 @@ public class HotelServicesImpl implements HotelServices {
     }
 
     @Override
-    public void saveHotel(HotelModel hotel) {
-        if (hotel.getId() == null) {
-            hotelRepo.save(hotel);
+    public List<AmenitiesModel> findAllAmenities() {
+        return amenitiesRepo.findAll();
+    }
 
-        } else {
+    @Override
+    public void saveHotel(HotelModel hotel) {
+
+        if (hotel.getId() == null) {
+
+            if(hotel.getAmenities()!=null){
+                hotel.getAmenities().setHotel(hotel);
+                hotelRepo.save(hotel);
+
+            }
+
+
+            //hotelRepo.save(hotel);
+        }
+        else
+        {
             Optional<HotelModel> opt = hotelRepo.findById(hotel.getId());
             if (opt.isEmpty()) {
                 throw new HotelNotFoundException("Hotel not fount with ID:" + hotel.getId());
@@ -58,6 +84,7 @@ public class HotelServicesImpl implements HotelServices {
             h.setName(hotel.getName());
             h.setAddress(hotel.getAddress());
             h.setRating(hotel.getRating());
+            h.setAmenities(hotel.getAmenities());
             hotelRepo.save(h);
         }
     }
@@ -85,6 +112,11 @@ public class HotelServicesImpl implements HotelServices {
         }
         hotelRepo.deleteById(id);
 
+    }
+
+    @Override
+    public List<HotelModel> getSortedByRating(String field) {
+        return hotelRepo.findAll(Sort.by(field).descending());
     }
 }
 

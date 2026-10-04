@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookings")
@@ -44,6 +45,11 @@ public class BookingModel extends BaseModel {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
+
+
+    private LocalDateTime cancelledAt;
+
+    private String cancelledBy;
 
 
 
@@ -94,7 +100,27 @@ public class BookingModel extends BaseModel {
         return status;
     }
 
+    public LocalDateTime getCancelledAt() {
+        return cancelledAt;
+    }
+
+    public void setCancelledAt(LocalDateTime cancelledAt) {
+        this.cancelledAt = cancelledAt;
+    }
+
+    public String getCancelledBy() {
+        return cancelledBy;
+    }
+
+    public void setCancelledBy(String cancelledBy) {
+        this.cancelledBy = cancelledBy;
+    }
+
     public void setStatus(BookingStatus status) {
         this.status = status;
     }
+
+
+
+
 }

@@ -7,6 +7,7 @@ import com.hotel.repo.RoomRepo;
 import com.hotel.services.HotelServices;
 import com.hotel.services.RoomServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,5 +77,15 @@ public class RoomServicesImpl implements RoomServices {
     @Override
     public List<RoomModel> findByHotelId(Long hotelId) {
         return roomRepo.findByHotel_Id(hotelId);
+    }
+
+    @Override
+    public List<RoomModel> getSortedByPriceInAscendingOrder(String field) {
+        return roomRepo.findAll(Sort.by(field).ascending());
+    }
+
+    @Override
+    public List<RoomModel> getSortedByPriceInDescendingOrder(String field) {
+        return roomRepo.findAll(Sort.by(field).descending());
     }
 }

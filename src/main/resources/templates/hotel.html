@@ -151,7 +151,9 @@
         <th>Hotel Name</th>
         <th>Address</th>
         <th>Rating</th>
+        <th>Amenities</th>
         <th>Action</th>
+
     </tr>
     </thead>
 
@@ -161,6 +163,66 @@
         <td th:text="${h.name}"></td>
         <td th:text="${h.address}"></td>
         <td th:text="${h.rating}"></td>
+
+        <td>
+
+        <span th:if="${h.amenities != null && h.amenities.wifi}">
+            📶 WiFi
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.television}">
+            📺 TV
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.telephone}">
+            ☎ Telephone
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.restaurant}">
+            🍽 Restaurant
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.swimmingPool}">
+            🏊 Pool
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.gym}">
+            💪 Gym
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.airportShuttle}">
+            ✈ Airport Shuttle
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.freeParking}">
+            🚗 Parking
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.carRental}">
+            🚙 Car Rental
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.cctvSecurity}">
+            🎥 CCTV
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.privateBalcony}">
+            🌅 Balcony
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.jacuzzi}">
+            🛁 Jacuzzi
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.oceanView}">
+            🌊 Ocean View
+        </span>
+
+            <span th:if="${h.amenities != null && h.amenities.privateBedding}">
+            🛏 Private Bedding
+        </span>
+
+        </td>
 
         <td>
             <a th:href="@{/admin/hotel/edit/{id}(id=${h.id})}" class="edit">✏ Edit</a>

@@ -60,6 +60,9 @@ public class BaseController {
                 authentication.getAuthorities();
 
 
+
+
+
         // ================= CUSTOMER =================
 
         if (authorities.stream().anyMatch(
@@ -329,7 +332,6 @@ public class BaseController {
     @GetMapping("/available-hotels")
     public String findAvailableHotelsByAddress(
             @RequestParam String address,
-
             @RequestParam String startDate,
             @RequestParam String endDate,
             Model model
@@ -358,11 +360,25 @@ public class BaseController {
 
             System.out.println(h.getName());
         }
-
+        model.addAttribute("checkInDate", startDate);
+        model.addAttribute("checkOutDate", endDate);
         model.addAttribute("hotels", hotels);
 
         return "available-hotels";
     }
 
+    @GetMapping("/customer/bookings")
+    public String bookingHistory(){
+        return "Booking-history";
+
+    }
+
+
+
+
+
 
 }
+
+
+
